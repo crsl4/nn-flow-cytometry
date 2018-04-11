@@ -1,4 +1,6 @@
-## julia script to read the baseline data/cytof-5-data
+## julia script to read the data/cytof-5-data
+## and create the HDF5 and TXT files needed by Mocha.jl
+## new files will be put in the same data folder
 ## Claudia April 2018
 ## to do (fixit):
 ## - for now, using only one response, can we use the whole vector of functional variables as response?
@@ -31,7 +33,7 @@ df5 = CSV.read(string(datafolder,dat5), delim='\t')
 surface = ["191-DNA","193-DNA","115-CD45","139-CD45RA","142-CD19","144-CD11b","145-CD4","146-CD8","148-CD34","147-CD20","158-CD33","160-CD123","167-CD38","170-CD90","110_114-CD3"]
 ## Functional markers: responses
 functional=["141-pPLCgamma2","150-pSTAT5", "152-Ki67","154-pSHP2","151-pERK1/2","153-pMAPKAPK2","156-pZAP70/Syk","159-pSTAT3","164-pSLP-76","165-pNFkB","166-IkBalpha","168-pH3","169-pP38","171-pBtk/Itk","172-pS6","174-pSrcFK","176-pCREB","175-pCrkL"]
-functional=functional[1] ##fixit: using only one response now
+functional=functional[1:2] ##fixit: using only one response now, but need to take two to convert to Array{Float32,2}
 
 ## Creating predictor matrix, using dat1,dat2,dat3,dat4 as training samples, and dat5 as testing sample
 df1pred = df1[Symbol.(surface)]
@@ -66,3 +68,12 @@ dfrespTest = df5resp
 ## -------------------------------------
 ## Creating input files for Mocha.jl
 ## -------------------------------------
+using HDF5,JLD
+include("functions.jl")
+resultsfolder = "../results/"
+
+traindata = string(resultsfolder,"cytof-5-data-train")
+writeMochaInput(dfpredTrain,dfrespTrain,traindata)
+
+testdata = string(resultsfolder,"cytof-5-data-test")
+writeMochaInput(dfpredTest,dfrespTest,testdata)

@@ -1,5 +1,6 @@
 data
 resources
+*.hdf5
 
 # Compiled source #
 ###################

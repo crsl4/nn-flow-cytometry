@@ -26,7 +26,7 @@ fc2_layer  = InnerProductLayer(name="ip2", output_dim=1, bottoms=[:ip1], tops=[:
 
 # Loss layer -- connected to the second IP layer and "label" from
 # the data layer.
-loss_layer = SoftmaxLossLayer(name="loss", bottoms=[:ip2,:label])
+loss_layer = SquareLossLayer(name="loss", bottoms=[:ip2,:label])
 
 # Configure and build
 backend = CPUBackend()
@@ -75,7 +75,6 @@ test_net = Net(string(rootname,"-test"), backend, [data_layer_test, common_layer
 add_coffee_break(solver, ValidationPerformance(test_net), every_n_iter=1000)
 
 @time solve(solver, net)
-## ERROR: AssertionError: labels should be index in [0, n_class-1]
 
 # Generate a net.dot file to create a .png visualizing the network
 # Comment out if Graphviz is not installed
@@ -87,3 +86,4 @@ open(string(rootname,".dot"), "w") do out net2dot(out, net) end
 destroy(net)
 destroy(test_net)
 shutdown(backend)
+

@@ -1,6 +1,7 @@
 data
 resources
 *.hdf5
+*.jld
 
 # Compiled source #
 ###################

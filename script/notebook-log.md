@@ -1,6 +1,11 @@
 # To do
-- check data; write NN script in julia
+- Plot the relationships between surface and functional markers, to see if they follow a linear trend
+- Plot the histograms of the markers to see if we need to transform. In the other deep learning paper for cytometry data, they did transform their variables to achieve normality. I do not have much experience with neural networks to tell how much this will affect the performance, but let's look at the histograms and decide
+- Run another method (linear regression/splines) to have a baseline predication performance, to compare to our neural network
+- Try different options in the neural network
+
 - read Li 2017 paper
+
 
 # 1. Reading the data and creating input files for NN
 - Using `scripts/create-input.jl` script, which will read data from `data/cytof-5-data`:

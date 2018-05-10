@@ -1,5 +1,6 @@
 ## Julia script to fit a neural network, after creating the input data
 ## with create-input.jl
+## WARNING: you should not have snapshots folder already in wd
 ## Claudia April 2018
 
 using Mocha
@@ -17,23 +18,32 @@ data_layer  = HDF5DataLayer(name=rootname, source=traindata, batch_size=64, shuf
 # Inner product layer, input is determined by the "bottoms" option,
 # in this case, the data layer
 
-fc1_layer  = InnerProductLayer(name="ip1", output_dim=800,
+fc1_layer  = InnerProductLayer(name="ip1", output_dim=12,
 neuron=Neurons.Identity(), weight_init = GaussianInitializer(std=.01),
 bottoms=[:data], tops=[:ip1])
 
+fc2_layer  = InnerProductLayer(name="ip2", output_dim=6,
+neuron=Neurons.Identity(), weight_init = GaussianInitializer(std=.01),
+bottoms=[:ip1], tops=[:ip2])
+
+fc3_layer  = InnerProductLayer(name="ip3", output_dim=3,
+neuron=Neurons.Identity(), weight_init = GaussianInitializer(std=.01),
+bottoms=[:ip2], tops=[:ip3])
+
+
 # Output dim is 1, because it is a real number
-fc2_layer  = InnerProductLayer(name="ip2", output_dim=1, bottoms=[:ip1], tops=[:ip2])
+fc4_layer  = InnerProductLayer(name="ip4", output_dim=1, bottoms=[:ip3], tops=[:ip4])
 
 # Loss layer -- connected to the second IP layer and "label" from
 # the data layer.
-loss_layer = SquareLossLayer(name="loss", bottoms=[:ip2,:label])
+loss_layer = SquareLossLayer(name="loss", bottoms=[:ip4,:label])
 
 # Configure and build
 backend = CPUBackend()
 init(backend)
 
 # Putting the network together
-common_layers = [fc1_layer, fc2_layer]
+common_layers = [fc1_layer, fc2_layer, fc3_layer, fc4_layer]
 net = Net(rootname, backend, [data_layer, common_layers..., loss_layer])
 
 
@@ -69,7 +79,7 @@ add_coffee_break(solver, Snapshot(expdir), every_n_iter=500)
 
 # Evaluation network. Run against the test set
 data_layer_test = HDF5DataLayer(name=string(rootname,"-test"), source=testdata, batch_size=100)
-acc_layer = AccuracyLayer(name=string(rootname,"-accuracy"), bottoms=[:ip2, :label])
+acc_layer = AccuracyLayer(name=string(rootname,"-accuracy"), bottoms=[:ip4, :label])
 test_net = Net(string(rootname,"-test"), backend, [data_layer_test, common_layers..., acc_layer])
 
 add_coffee_break(solver, ValidationPerformance(test_net), every_n_iter=1000)

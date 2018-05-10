@@ -1,11 +1,18 @@
 # To do
-- Plot the relationships between surface and functional markers, to see if they follow a linear trend
-- Plot the histograms of the markers to see if we need to transform. In the other deep learning paper for cytometry data, they did transform their variables to achieve normality. I do not have much experience with neural networks to tell how much this will affect the performance, but let's look at the histograms and decide
 - Run another method (linear regression/splines) to have a baseline predication performance, to compare to our neural network
-- Try different options in the neural network
-
+- Try different options in the neural network: start with the bioinformatics paper, what network do they use?
 - read Li 2017 paper
 
+# For meeting
+- see `hist-all.pdf`, not normal, does it matter for the neural network? see also transformed `hist-all-transformed.pdf`
+- scattermatrix: not so linear, we can look at other combinations
+
+# 0. Exploratory analysis
+- Using `scripts/exploratory.r`, which will read the raw data from `data/cytof-5-data`, and plot some exploratory things.
+- Output 
+    - `results/hist-all.pdf`
+    - `results/hist-all-transformed.pdf`
+    - `results/scattermatrix1.pdf`
 
 # 1. Reading the data and creating input files for NN
 - Using `scripts/create-input.jl` script, which will read data from `data/cytof-5-data`:
@@ -25,3 +32,4 @@
 # 2. Fitting neural network
 - Using `script/fit-nn.jl`. Considerations:
     - response is a real number, so we can have big errors by using one node at the end; but creating categories is not good idea either
+    - We will start with the same network architecture as in Liu 2017: depth-4 feed-forward neural network with three softplus hidden layers and a softmax output layer. The hidden layer sizes are set to 12,6,3.

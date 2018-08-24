@@ -1,6 +1,9 @@
 # To do
 - Run another method (linear regression/splines) to have a baseline predication performance, to compare to our neural network
-- Try different options in the neural network: start with the bioinformatics paper, what network do they use?
+- Try different options in the neural network: start with the bioinformatics paper, what network do they use:
+    - Xin's ideas:
+        - transform predictors: logarithmic/scale
+        - add more input nodes for nonlinear effects 
 - read Li 2017 paper
 
 # For meeting

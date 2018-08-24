@@ -1,10 +1,11 @@
 # To do
-- Run another method (linear regression/splines) to have a baseline predication performance, to compare to our neural network
 - Try different options in the neural network: start with the bioinformatics paper, what network do they use:
     - Xin's ideas:
         - transform predictors: logarithmic/scale
         - add more input nodes for nonlinear effects 
-- read Li 2017 paper
+        - linear regression as a baseline
+- email Max: vector response in NN
+- read Li 2017 paper: use as pattern for paper/ note using squared error loss
 
 # For meeting
 - see `hist-all.pdf`, not normal, does it matter for the neural network? see also transformed `hist-all-transformed.pdf`

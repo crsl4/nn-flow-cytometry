@@ -44,7 +44,9 @@ dfrespTest = convert(Array{Float64,2}, dfresp[rand_seq[1000001:1223228],:])
 ### fit the linear model, no regularity
 using ScikitLearn
 @sk_import linear_model: LinearRegression
+tic()
 lr = fit!(LinearRegression(),dfpredTrain,dfrespTrain)
+toc()  ## 1.98s
 lr_pred = predict(lr,dfpredValid)
 diff = mapslices(Base.norm, lr_pred - dfrespValid,[2])
 lr_vec_loss = sum(diff.^2)/(2*size(diff)[1])
@@ -81,7 +83,9 @@ lr_pt_loss  ## 0.2308, 0.4301, 0.5954, 0.2353, 0.2490, 0.2427
 ###########################################################################
 ## Decision Tree regression
 @sk_import tree: DecisionTreeRegressor
+tic()
 dtr = fit!(DecisionTreeRegressor(criterion="mse"),dfpredTrain,dfrespTrain)
+toc()  ## 63.36s
 dtr_pred = predict(dtr,dfpredValid)
 diff = mapslices(Base.norm,dtr_pred-dfrespValid,[2])
 vec_loss = sum(diff.^2)/(2*size(diff)[1])
@@ -103,7 +107,9 @@ dtr_pt_loss  ## 0.4207, 0.7510, 0.8740, 0.4556, 0.4644, 0.4460,
 ###########################################################################
 ## random forest regression
 @sk_import ensemble: RandomForestRegressor
+tic()
 rfr = fit!(RandomForestRegressor(n_estimators=20),dfpredTrain,dfrespTrain)
+toc()  ## 826.83s
 rfr_pred = predict(rfr,dfpredValid)
 diff = mapslices(Base.norm,rfr_pred-dfrespValid,[2])
 vec_loss = sum(diff.^2)/(2*size(diff)[1])
@@ -189,30 +195,64 @@ params = make_solver_parameters(method, max_iter=50000, regu_coef=0.0001,
 solver = Solver(method, params)
 
 setup_coffee_lounge(solver, save_into="$expdir/statistics.jld", every_n_iter=1000)
-add_coffee_break(solver, TrainingSummary(), every_n_iter=5000)
+add_coffee_break(solver, TrainingSummary(), every_n_iter=10000)
 add_coffee_break(solver, Snapshot(expdir), every_n_iter=50000)
+
+
+# add_coffee_break(solver, ValidationPerformance(test_net), every_n_iter=10000)
+# add_coffee_break(solver,ValidationPerformance(final_net),every_n_iter=50000)
+
+@time solve(solver, net)  ## 181.82s
+
+open(string(rootname,".dot"), "w") do out net2dot(out, net) end
 
 # Evaluation network. Run against the validation set
 # Loss function is set to be squared loss as we have continuous outcomes (Xin)
 data_layer_test = MemoryDataLayer(name=string(rootname,"-valid"), data=Array[vlX,vlY],batch_size=1)
-acc_layer = SquareLossLayer(name=string(rootname,"-accuracy"), bottoms=[:ip5, :label])
-test_net = Net(string(rootname,"-valid"), backend, [data_layer_test, common_layers..., acc_layer])
+# acc_layer = SquareLossLayer(name=string(rootname,"-accuracy"), bottoms=[:ip5, :label])
+pred_layer = HDF5OutputLayer(filename=string(rootname,"-vlpred.h5"),bottoms=[:ip5])
+test_net = Net(string(rootname,"-valid"), backend, [data_layer_test, common_layers..., pred_layer])
+load_snapshot(test_net,"snapshots/snapshot-050000.jld")
+init(test_net)
+forward_epoch(test_net)
 
 ## on testing data
 test_data = MemoryDataLayer(name=string(rootname,"-test"),data=Array[teX,teY],batch_size=1)
-vec_loss = SquareLossLayer(name=string(rootname,"-vecloss"),bottoms=[:ip5, :label])
-final_net = Net(string(rootname,"-test"),backend,[test_data, common_layers..., vec_loss])
+pred_layer = HDF5OutputLayer(filename=string(rootname,"-tepred.h5"),bottoms=[:ip5])
+final_net = Net(string(rootname,"-test"),backend,[test_data, common_layers..., pred_layer])
+load_snapshot(final_net,"snapshots/snapshot-050000.jld")
+init(final_net)
+forward_epoch(final_net)
 
-add_coffee_break(solver, ValidationPerformance(test_net), every_n_iter=10000)
-add_coffee_break(solver,ValidationPerformance(final_net),every_n_iter=50000)
-
-@time solve(solver, net)
-
-open(string(rootname,".dot"), "w") do out net2dot(out, net) end
 
 destroy(net)
 destroy(test_net)
+destroy(final_net)
 shutdown(backend)
+
+using HDF5
+vlpred = h5open("cytof-5-vlpred.h5", "r") do file
+    read(file, "ip5")
+end
+tepred = h5open("cytof-5-tepred.h5", "r") do file
+    read(file, "ip5")
+end
+## validation mse 5.6334
+diff = mapslices(Base.norm,vlpred-vlY,[1])
+vec_loss = sum(diff.^2)/(2*size(diff)[2])
+## testing mse
+diff = mapslices(Base.norm,tepred-teY,[1])
+nn_vec_loss = sum(diff.^2)/(2*size(diff)[2]) ## 5.6447
+# MSE for individual response
+nn_pt_loss=zeros(18)
+for i=1:18
+    nn_pt_loss[i] = sum((tepred[i,:]-teY[i,:]).^2)/(2*size(tepred)[2])
+end
+nn_pt_loss  ## 0.2067, 0.3586, 0.4266, 0.2254, 0.2331, 0.2212,
+            ## 0.2172, 0.3665, 0.1904, 0.2735, 0.2315, 0.3271,
+            ## 0.3260, 0.7565, 0.3790, 0.3897, 0.2593, 0.2564
+
+
 
 ## 'Tanh' best; train - regu_coef, mom, lr (3)
 ## 0.005, 0.9, (0.01, 0.0001, 0.75) [90,45,45]: 5.8803 /te: 5.8940
@@ -226,4 +266,4 @@ shutdown(backend)
 ## 0.0001, 0.8, (0.05,same) Adam   : 5.7394 /te: 5.7544
 ## as * enlarge layers[180,90,45]  : 5.6654 /te: 5.6735
 ## * [360,90,45]                   : 5.6805 /te: 5.6919
-## * one more layer[90,90,45,45]   : 5.6433 /te: 5.6568 ** (250.6s)
+## * one more layer[90,90,45,45]   : 5.6433 /te: 5.6568 ** (results rerun)

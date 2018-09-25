@@ -1,0 +1,339 @@
+%%%%%%%%%%%%%%%%%%%% author.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample root file for your "contribution" to a contributed volume
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%% Springer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[graybox]{svmult}
+
+% choose options for [] as required from the list
+% in the Reference Guide
+
+\usepackage{mathptmx}       % selects Times Roman as basic font
+\usepackage{helvet}         % selects Helvetica as sans-serif font
+\usepackage{courier}        % selects Courier as typewriter font
+\usepackage{type1cm}        % activate if the above 3 fonts are
+                            % not available on your system
+%
+\usepackage{makeidx}         % allows index generation
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+
+% see the list of further useful packages
+% in the Reference Guide
+
+\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% track changes
+\usepackage[normalem]{ulem}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\claudia}[2]{\sout{#1}\textcolor{magenta}{\textbf{#2}}}
+
+
+\begin{document}
+
+\title*{Prediction of functional markers of mass cytometry data via
+  deep learning}
+% Use \titlerunning{Short Title} for an abbreviated version of
+% your contribution title if the original one is too long
+%\thanks{Both authors contributed equally to this manuscript}
+\author{Claudia Sol\'is-Lemus, Xin Ma, Maxwell Hostetter II, Suprateek
+  Kundu, Peng Qiu, Daniel Pimentel-Alarc\'on}
+%\author{Xin Ma, Claudia Sol\'is-Lemus, Maxwell Hostetter II, Suprateek
+%  Kundu, Daniel Pimentel-Alarc\'on}
+%\author{xxx\thanks{work the same}, xxs$^*$}% \footnotemark[1]}
+% Use \authorrunning{Short Title} for an abbreviated version of
+% your contribution title if the original one is too long
+\institute{Claudia Sol\'is-Lemus \at Emory University, Atlanta, GA, \email{csolisl@emory.edu}
+\and Xin Ma \at Emory University, Atlanta, GA,
+\email{xin.ma@emory.edu}
+\and Maxwell Hostetter II \at Georgia State University, Atlanta, GA,
+\email{mhostetter1@student.gsu.edu}
+\and Suprateek Kundu \at Emory University, Atlanta, GA,
+\email{suprateek.kundu@emory.edu}
+\and Peng Qiu \at Georgia Institute of Technology, Atlanta, GA,
+\email{peng.qiu@bme.gatech.edu}
+\and Daniel Pimentel-Alarc\'on \at Georgia State University, Atlanta, GA,
+\email{pimentel@gsu.edu}}
+%
+% Use the package "url.sty" to avoid
+% problems with special characters
+% used in your e-mail or web address
+%
+\maketitle
+
+\abstract{add here}
+
+\section{Introduction}
+
+% from Peng Qui PQ.docx: ---
+Multiparametric single-cell analysis has advanced our understanding of
+diverse biological and pathological processes, providing insights into
+cellular differentiation, intracellular signaling cascades and
+clinical immunophenotyping. Modern flow cytometers typically provide
+simultaneous single-cell measurements of up to 12 fluorescent
+parameters in routine cases, and analysis of up to 30 protein
+parameters has been recently made commercially available. In addition,
+a next-generation mass cytometry platform (CyTOF) has become
+commercially available, which allows routine measurement of 50 or more
+protein markers.
+
+Despite the technological advances in acquiring an
+increasing number of parameters per single cell, approaches for
+analyzing such complex data lag behind. The existing approaches are
+often subjective and labor-intensive. For example, the widely used
+gating approach identifies cell types by user-defined sequences of
+nested 2-D plots. There have been efforts to develop clustering
+algorithms (eg, flowMeans, flowSOM, X-shift) and dimension reduction
+algorithms (eg, SPADE, tSNE, Scaffold). However, there is still huge
+space for developing new methods to ask new questions in this field.
+% ---
+
+Recently, deep learning models are revolutionizing the fields of
+precision medicine, data mining, astronomy, human-computer
+interactions, among many others, by becoming a major discovery force
+in science due to the unprecedented accuracy in prediction.  Here, we
+explore neural network models to predict functional markers (internal
+phosphoproteins) with identify markers (cell surface proteins).
+
+On one side, identify markers define a cell type (e.g., B cell, T
+cell, monocytes, MSC), and on the other side, expressions of
+functional markers identify the cell's activity (e.g., quiescent,
+secreting cytokines, proliferating, apoptosis). Since CyTOF technology
+allows for the simulteanous measurement of a large number of protein
+markers, most CyTOF studies measure both identity markers and
+functional markers, providing data for supervised learning tools, like
+neural networks.
+
+
+
+\begin{itemize}
+\item Mass cytometry (CyTOF) is an emergent technological development
+  for high-dimensional multiparameter single cell analysis.
+\item CyTOF provides unprecedented multidimensional immune cell
+  profiling and has recently been applied to characterizing peripheral
+  blood cells, Natural Killer cells in viral infections, skin cells,
+  cells in celiac disease, responding phenotypes in cancer and even
+  holds the promise of examination of solid tumors (add references)
+\item Among the features per cell, there two classes: surface markers
+  (which identify the type of cell) and functional markers (which
+  identify the function of the cell)
+\item Collecting the functional markers is time-consuming and
+  computationally expensive (yes?), so it is desirable to devise a
+  prediction scheme that can allow us to predict the funcional markers
+  from the surface markers
+\item Deep learning methods have achieved outstanding performance in
+  various computational tasks, such as image analysis, natural
+  language processing, and pattern recognition (references)
+\item Moreover, recent efforts to use deep learning approaches in
+  genomics and biomedical applications show their flexibility for
+  handling complex problems (Cires ̧an et al., 2013; Cruz-Roa et al.,
+  2014; Denas and Taylor, 2013; Fakoor et al., 2013; Leung et al.,
+  2014).
+\item in each FCM and CyTOF run we typically collect approximately $10^5$
+  to $10^6$ cells, so that the number of instances (cells) is several
+  orders of magnitude larger than the number of variables (up to 50
+  markers). Therefore, developing deep learning approaches to analyze
+  cytometry data is very promising.
+\item We present DeepCyTOF, an integrated deep learning domain
+  adaptation framework, which employs one manually gated reference
+  sample and utilizes it for automated gating of the remaining samples
+  in a study.
+\item We use this method in the dataset bla
+\item We compare the NN approach to other usual prediction methods
+  like regression-based and xxx (Suprateek is checking this), and show
+  how the NN approach improves the prediction by the incorporation of
+  non-linear and interaction effects.
+\item We show the improvement driven by NN when the effects are
+  nonlinear as a powerful alternative to the usual regression techniques.
+\end{itemize}
+
+
+\section{Data}
+
+In a dataset we previously published
+[Bendall et al 2011; Qiu et al 2011], we measured 13 identity
+(surface) markers and 18 functional markers simultaneously.  This
+measurement was performed on 5 health donor bone marrow samples
+untreated, and also on 24 health bone marrow samples treated by 24
+different drugs.  For the moment, let’s focus on the first 5 samples.
+
+Given the data from 1 of the 5 samples, we have observations (data
+points) for roughly 250,000 cells. This 250,000*(13+18) data can be
+used to build a machine learning model to predict the 18 function
+markers based on the 13 identity markers. In this dataset, we roughly
+know that the 13 identity markers can be used to define ~25 cell
+types, and we have manually created cell type label for each cell. One
+machine learning question can be predicting the cell type label based
+on the 13 surface markers, however, this is not the question we are
+asking here. The questions we want to ask are:
+
+1. If we use 1 sample
+to train a deep learning model which use identity markers to predict
+functional markers, can this model be used (generalized) to predict
+functional markers in the other 4 untreated samples?
+
+2. Based on the
+trained deep learning model, can we try to identify cell clusters? And
+will our cell clusters agree with the well-accepted cell types in the
+literature.
+
+3. If we focus cells belonging to the same known cell
+type, and examine the distribution of functional markers and the
+correlation with the subtle variations of the identity markers among
+cells of this type, are we able to see hints that this cell type may
+be further divided into subtypes?
+
+The data is highly complex, violating the linearity assumptions of
+linear regression, see plot, even after the standard transformation
+for CyTOF data (arcsinh with cofactor=5). \ref{exploratory}
+
+\begin{figure}
+\includegraphics[scale=0.3]{figures/surface-hist.pdf}
+\includegraphics[scale=0.3]{figures/functional-hist.pdf}
+\includegraphics[scale=0.3]{figures/scatterplot.pdf}
+\caption{Exploratory plots of surface and functional markers. The
+  histograms show a biased pattern, and the scatterplot shows non
+  linearity, crucial assumptions in regression.}
+\label{exploratory}
+\end{figure}
+
+
+\section{Materials and Methods}
+
+We fit a neural network model to predict functional markers from
+surface markers, and compare its performance to three classical
+statistical methods like linear regression (unpenalized and
+penalized), and random trees. Due to computational time constraints,
+we could not fit a support vector regression in the dataset. We
+compared the performance of the four approaches by computing the mean
+square error of the predicted responses.
+
+To fit the models, we divided the data (1,223,228 cells in 18
+functional markers (responses) and 15 surface markers (predictors))
+into three subsets: 250,000 rows as training data, 250,000 rows as
+validation data and 223,228 rows as testing data. The training data
+was used to fit each of the four models. The validation data was used
+to determine the best setup (tuning parameters) of each model in terms
+of mse, and the test data was used to compare the mse across methods.
+
+We used the vector mse (put formula), and the 18 individual mse's (put
+formula) on the test data to compare across methods.
+
+\begin{equation}
+MSE_{vec} = \frac{1}{n} \sum_{i=1}^n ||\hat{Y}_i - Y_i ||^2_2
+\label{vectorMSEformula}
+\end{equation}
+
+where $\hat{Y}_i \in \mathbf{R}^{18}$ is the predicted vector of
+responses for individual $i$, and $Y_i \in \mathbf{R}^{18}$ is the
+observed vector of responses for individual $i$.
+
+The individual MSE was then defined for predictor $k$ as
+\begin{equation}
+MSE_{(k)} = \frac{1}{n} \sum_{i=1}^n (\hat{Y}_{k,i} - Y_{k,i} )^2
+\label{MSEformula}
+\end{equation}
+where $\hat{Y}_{k,i} \in \mathbf{R}$ is the $k^{th}$ predicted
+response ($k=1,\cdots,18$) for individual $i$, and $Y_{k,i} \in
+\mathbf{R}$ is the $k^{th}$ observed response for individual $i$.
+
+% https://github.com/pluskid/Mocha.jl/blob/master/docs/user-guide/solver.rst
+\vspace{0.25cm}
+\noindent \textbf{Neural network model} We tested different network
+architectures, activation functions, regularization coefficients,
+solver methods, momentum policies, and learning rates. The best
+network has four layers (see figure xxx) with 90, 90, 45 and 45
+nodes. The network uses hyperbolic tangent as activation function,
+regularization coefficient 0.0001, momentum policy at 0.8, learning
+rates of (0.05, 0.01, 0.0001, 0.75).
+
+\vspace{0.25cm}
+\noindent \textbf{Linear regression (unpenalized/penalized)} We fit standard
+linear regression, as well as the penalized version with LASSO penalty
+under different penalization parameters. We used the
+\textit{ScikitLearn} julia wrapper, with default settings.
+
+\vspace{0.25cm}
+\noindent \textbf{Decision tree and random trees} We fit one decision
+regression tree with \textit{ScikitLearn} julia wrapper, with default
+settings. We compared the performance of the ``mse'' criterion and the
+Friedman's improvement score, deciding on the former (``mse'') which
+is the default setting. We did not constraint the maximum depth of the
+tree, and used as 2 the minimum number of samples required to split an
+internal node. We did not constraint the maximum number of features to
+consider when looking for the best split. Later, we fit 20 trees into
+a random forest method, which showed good performance but not a lot of
+time waiting.
+
+
+\section{Results}
+
+In Figure \ref{vectorMSE}, we have the comparison of the individual
+MSE per method, per response (18 functional markers). We can see in
+this plot that the neural network model outperforms the other standard
+approaches. In Figure \ref{vectorMSE}, we also see that the time is
+better for the neural network approach.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{figures/vector-mse.pdf}
+\includegraphics[scale=0.35]{figures/time.pdf}
+\caption{Vector MSE for all 18 predictors as in formula
+  \ref{vectorMSEformula}, and running time in seconds.. We see that
+  the performance of neural network is better than all the
+  others, without being much slower.}
+\label{vectorMSE}
+\end{figure}
+
+In Figure \ref{MSE}, we have the comparison of the joint MSE for all 18
+responses. Here we can also see that the performance of neural network
+is better than other approaches.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.45]{figures/mse.pdf}
+\caption{MSE for each 18 predictors as in formula
+  \ref{MSEformula}. We see that the performance of neural
+  network is better than all the others. Lines drawn only to
+  appreciate the order among methods better.}
+\label{MSE}
+\end{figure}
+
+
+
+\section{Discussion}
+
+We showed that neural network is better than other approaches, mostly
+due to the lack of simplifing assumptions like lienarity. The
+performance is better in terms of prediction accuracy (measured by
+mse) and computational time.
+
+unlike regression, neural network takes advatange of the correlation
+among responses by fitting a network for the whole response vector.
+
+For future work, So, we have N experiments: N+1 matrices 100k by 50: B
+(baseline), $E_1,...,E_N$. We want to use the baseline information to
+predict the funcional markers at different experiments (see below for
+more details) (also, surface markers do not change). That is, use B to
+predict $E_i$ with a neural network. Using the individual 1 as
+training, we can then only get baseline information for future
+individuals and predict their functional markers. This is great
+because this experiments are expensive, so our method would be widely
+used to save money.
+
+
+
+%\input{references} %%originally referenc
+
+\end{document}

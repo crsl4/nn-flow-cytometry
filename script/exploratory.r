@@ -15,7 +15,7 @@ subdat = subset(dat1,select=c("X191.DNA","X193.DNA","X115.CD45","X139.CD45RA","X
 attr(subdat, "surface") <- c("X191.DNA","X193.DNA","X115.CD45","X139.CD45RA","X142.CD19","X144.CD11b","X145.CD4","X146.CD8","X148.CD34","X147.CD20","X158.CD33","X160.CD123","X167.CD38","X170.CD90","X110_114.CD3")
 attr(subdat, "functional") <- c("X141.pPLCgamma2","X150.pSTAT5","X152.Ki67","X154.pSHP2","X151.pERK1.2","X153.pMAPKAPK2","X156.pZAP70.Syk","X159.pSTAT3","X164.pSLP.76","X165.pNFkB","X166.IkBalpha","X168.pH3","X169.pP38","X171.pBtk.Itk","X172.pS6","X174.pSrcFK","X176.pCREB","X175.pCrkL")
 attributes(subdat)
-
+head(subdat)
 
 
 ## Histograms

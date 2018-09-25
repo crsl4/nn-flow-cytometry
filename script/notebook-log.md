@@ -1,11 +1,15 @@
 # To do
 - Try different options in the neural network: start with the bioinformatics paper, what network do they use:
     - Xin's ideas:
-        - transform predictors: logarithmic/scale
+        - transform predictors: logarithmic/scale (waiting for suprateek to confirm if data has been transformed already or if it is ok to have negative values)
         - add more input nodes for nonlinear effects 
         - linear regression as a baseline
-- email Max: vector response in NN
+        - question: regularized linear regression with vector response?
 - read Li 2017 paper: use as pattern for paper/ note using squared error loss
+
+Xin meeting:
+- negative values: in which file to let suprateek/data people know?
+- figure out git push/pull
 
 # For meeting
 - see `hist-all.pdf`, not normal, does it matter for the neural network? see also transformed `hist-all-transformed.pdf`

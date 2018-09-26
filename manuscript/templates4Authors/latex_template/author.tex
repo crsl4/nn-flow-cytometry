@@ -38,6 +38,7 @@
 \usepackage[normalem]{ulem}
 \usepackage[dvipsnames]{xcolor}
 \newcommand{\claudia}[2]{\sout{#1}\textcolor{magenta}{\textbf{#2}}}
+\newcommand{\missing}[1]{\textcolor{red}{\textbf{#1}}}
 
 
 \begin{document}
@@ -49,9 +50,6 @@
 %\thanks{Both authors contributed equally to this manuscript}
 \author{Claudia Sol\'is-Lemus, Xin Ma, Maxwell Hostetter II, Suprateek
   Kundu, Peng Qiu, Daniel Pimentel-Alarc\'on}
-%\author{Xin Ma, Claudia Sol\'is-Lemus, Maxwell Hostetter II, Suprateek
-%  Kundu, Daniel Pimentel-Alarc\'on}
-%\author{xxx\thanks{work the same}, xxs$^*$}% \footnotemark[1]}
 % Use \authorrunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
 \institute{Claudia Sol\'is-Lemus \at Emory University, Atlanta, GA, \email{csolisl@emory.edu}
@@ -88,24 +86,28 @@ a next-generation mass cytometry platform (CyTOF) has become
 commercially available, which allows routine measurement of 50 or more
 protein markers.
 
-Despite the technological advances in acquiring an
-increasing number of parameters per single cell, approaches for
-analyzing such complex data lag behind. The existing approaches are
-often subjective and labor-intensive. For example, the widely used
-gating approach identifies cell types by user-defined sequences of
-nested 2-D plots. There have been efforts to develop clustering
-algorithms (eg, flowMeans, flowSOM, X-shift) and dimension reduction
-algorithms (eg, SPADE, tSNE, Scaffold). However, there is still huge
-space for developing new methods to ask new questions in this field.
+Despite the technological advances in acquiring an increasing number
+of parameters per single cell, approaches for analyzing such complex
+data lag behind. The existing approaches are often subjective and
+labor-intensive. For example, the widely used gating approach
+identifies cell types by user-defined sequences of nested 2-D
+plots. There have been efforts to develop clustering algorithms (e.g.,
+flowMeans\missing{(reference)}, flowSOM\missing{(reference)},
+X-shift\missing{(reference)}) and dimension reduction algorithms
+(e.g., SPADE\missing{(reference)}, tSNE\missing{(reference)},
+Scaffold\missing{(reference)}). However, there is still huge space
+for developing new methods to ask new questions in this field.
 % ---
 
 Recently, deep learning models are revolutionizing the fields of
 precision medicine, data mining, astronomy, human-computer
 interactions, among many others, by becoming a major discovery force
-in science due to the unprecedented accuracy in prediction.  Here, we
-explore neural network models to predict functional markers (internal
-phosphoproteins) with identify markers (cell surface proteins).
+in science due to the unprecedented accuracy in prediction.  Moreover,
+deep learning approaches have shown accurate performance on genomics
+and biomedical
+applications\cite{Ciresan2013,Denas2013,Fakoor2013,Leung2014,CruzRoa2014,Li2017,Mobadersany2018}.
 
+Furthermore, CyTOF data is perfectly suited for deep learning methods.
 On one side, identify markers define a cell type (e.g., B cell, T
 cell, monocytes, MSC), and on the other side, expressions of
 functional markers identify the cell's activity (e.g., quiescent,
@@ -113,90 +115,50 @@ secreting cytokines, proliferating, apoptosis). Since CyTOF technology
 allows for the simulteanous measurement of a large number of protein
 markers, most CyTOF studies measure both identity markers and
 functional markers, providing data for supervised learning tools, like
-neural networks.
+neural networks.  In addition, each CyTOF run typically collects data
+on $10^6$ cells, creating an ideal large dataset in which the number
+of samples (cells) is orders of magnitued larger than the number of
+variables (markers). Deep learning methods are particularly suited for
+this type of big data.
 
 
+Here, we explore neural network models to predict functional markers
+(internal phosphoproteins) with identify markers (cell surface
+proteins), and compare its performance in terms of accuracy and speed
+to other standard statistical approaches like regression, and random
+forests.  We show that neural networks improve prediction of
+functional markers, making them a powerful alternative to the usual
+regression techniques.
 
-\begin{itemize}
-\item Mass cytometry (CyTOF) is an emergent technological development
-  for high-dimensional multiparameter single cell analysis.
-\item CyTOF provides unprecedented multidimensional immune cell
-  profiling and has recently been applied to characterizing peripheral
-  blood cells, Natural Killer cells in viral infections, skin cells,
-  cells in celiac disease, responding phenotypes in cancer and even
-  holds the promise of examination of solid tumors (add references)
-\item Among the features per cell, there two classes: surface markers
-  (which identify the type of cell) and functional markers (which
-  identify the function of the cell)
-\item Collecting the functional markers is time-consuming and
-  computationally expensive (yes?), so it is desirable to devise a
-  prediction scheme that can allow us to predict the funcional markers
-  from the surface markers
-\item Deep learning methods have achieved outstanding performance in
-  various computational tasks, such as image analysis, natural
-  language processing, and pattern recognition (references)
-\item Moreover, recent efforts to use deep learning approaches in
-  genomics and biomedical applications show their flexibility for
-  handling complex problems (Cires ̧an et al., 2013; Cruz-Roa et al.,
-  2014; Denas and Taylor, 2013; Fakoor et al., 2013; Leung et al.,
-  2014).
-\item in each FCM and CyTOF run we typically collect approximately $10^5$
-  to $10^6$ cells, so that the number of instances (cells) is several
-  orders of magnitude larger than the number of variables (up to 50
-  markers). Therefore, developing deep learning approaches to analyze
-  cytometry data is very promising.
-\item We present DeepCyTOF, an integrated deep learning domain
-  adaptation framework, which employs one manually gated reference
-  sample and utilizes it for automated gating of the remaining samples
-  in a study.
-\item We use this method in the dataset bla
-\item We compare the NN approach to other usual prediction methods
-  like regression-based and xxx (Suprateek is checking this), and show
-  how the NN approach improves the prediction by the incorporation of
-  non-linear and interaction effects.
-\item We show the improvement driven by NN when the effects are
-  nonlinear as a powerful alternative to the usual regression techniques.
-\end{itemize}
 
 
 \section{Data}
 
-In a dataset we previously published
-[Bendall et al 2011; Qiu et al 2011], we measured 13 identity
-(surface) markers and 18 functional markers simultaneously.  This
-measurement was performed on 5 health donor bone marrow samples
-untreated, and also on 24 health bone marrow samples treated by 24
-different drugs.  For the moment, let’s focus on the first 5 samples.
+\subsection{Pre-processing}
 
-Given the data from 1 of the 5 samples, we have observations (data
-points) for roughly 250,000 cells. This 250,000*(13+18) data can be
-used to build a machine learning model to predict the 18 function
-markers based on the 13 identity markers. In this dataset, we roughly
-know that the 13 identity markers can be used to define ~25 cell
-types, and we have manually created cell type label for each cell. One
-machine learning question can be predicting the cell type label based
-on the 13 surface markers, however, this is not the question we are
-asking here. The questions we want to ask are:
+The dataset has been previously published in
+\cite{Bendall2011,Qiu2011}. It contains measurements for 13 identity
+(surface) markers, and 18 functional markers, which were performed on
+5 healthy untreated donor bone marrow samples. The data roughly
+contains 250,000 cells per sample (1,223,228 cells in
+total). Thus, the data can be expressed in a $1223228 \times 31$
+matrix.
 
-1. If we use 1 sample
-to train a deep learning model which use identity markers to predict
-functional markers, can this model be used (generalized) to predict
-functional markers in the other 4 untreated samples?
+The data was transformed with inverse hyperbolic sine function
+($arcsinh$ with co-factor of 5), which is the standard transformation
+for CyTOF data\missing{(reference)}.
 
-2. Based on the
-trained deep learning model, can we try to identify cell clusters? And
-will our cell clusters agree with the well-accepted cell types in the
-literature.
+\missing{(Peng: what was done to the data prior to sharing with us?)}
 
-3. If we focus cells belonging to the same known cell
-type, and examine the distribution of functional markers and the
-correlation with the subtle variations of the identity markers among
-cells of this type, are we able to see hints that this cell type may
-be further divided into subtypes?
+\subsection{Exploratory analysis}
 
-The data is highly complex, violating the linearity assumptions of
-linear regression, see plot, even after the standard transformation
-for CyTOF data (arcsinh with cofactor=5). \ref{exploratory}
+We will compare the performance different methods (explained next
+section) to predict the functional markers with the surface markers.
+The data is highly complex and correlated, violating some of the
+fundamental assumptions of standard statistical approaches (like
+regression). For example, the data is highly skewed and the pattern
+between response and predictor is not linear (see figure
+\ref{exploratory}). 
 
 \begin{figure}
 \includegraphics[scale=0.3]{figures/surface-hist.pdf}
@@ -204,42 +166,83 @@ for CyTOF data (arcsinh with cofactor=5). \ref{exploratory}
 \includegraphics[scale=0.3]{figures/scatterplot.pdf}
 \caption{Exploratory plots of surface and functional markers. The
   histograms show a biased pattern, and the scatterplot shows non
-  linearity, crucial assumptions in regression.}
+  linearity, both violations of crucial assumptions in standard
+  regression models.}
 \label{exploratory}
 \end{figure}
 
 
 \section{Materials and Methods}
 
+\subsection{Background on neural networks}
+
+A neural network model is formed by several {\em neurons}. Each neuron
+receives an input vector $x$, then weights its components according to
+the neuron's weight vector $w$, adds a {\em bias} constant $b$, and
+passes the result through a non-linear {\em activation function}
+$\sigma$. This way, the output of a neuron is given by $\sigma(w^Tx +
+b)$. There are several options for the activation function
+$\sigma$. Common choices include the {\em sigmoid} function
+$\sigma(z)=\frac{1}{1+e^-z}$ or the {\em rectified linear unit} (ReLU)
+$\sigma(z)=\max(0,z)$. For the CyTOF data, we use the hyperbolic
+tangent as activation function, as it showed better performance than
+the sigmoid or ReLU functions (more details on the specific neural
+network fit in subsection \ref{comparison}).
+
+The final output of the network is given by $\hat{f}(x)$ with
+parameters $\mathbf{W}_1,\cdots,\mathbf{W}_L$ for the weight matrices
+and $b_1,\cdots,b_L$ for the bias vectors for each layer.
+
+The estimation of the parameters is done through the following
+optimization
+\begin{equation}
+\min_{\{W_l,b_l\}_{l=1}^L} \ \ \sum_{i=1}^n \| y_i-\hat{f}(x_i) \|^2.
+\end{equation}
+
+The most widely used technique to solve this optimization is through
+stochastic gradient descent (SGD) and back-propagation, but we
+discovered that Adam\cite{Kingma2014}, an algorithm for first-order
+gradient-based optimization of stochastic objective functions, based
+on adaptive estimates of lower-order moments had better performance
+for our data (more details in subsection \ref{comparison}).
+
+
+\subsection{Methods comparison}
+\label{comparison}
+
 We fit a neural network model to predict functional markers from
 surface markers, and compare its performance to three classical
-statistical methods like linear regression (unpenalized and
-penalized), and random trees. Due to computational time constraints,
-we could not fit a support vector regression in the dataset. We
-compared the performance of the four approaches by computing the mean
-square error of the predicted responses.
+statistical methods: 1) linear regression (unpenalized and penalized),
+2) decision trees, and 3) random trees. Due to computational time
+constraints, we could not fit a support vector regression (SVR)
+model. We compared the performance of the four approaches by computing
+the mean square error (MSE) of the predicted responses.
 
-To fit the models, we divided the data (1,223,228 cells in 18
-functional markers (responses) and 15 surface markers (predictors))
-into three subsets: 250,000 rows as training data, 250,000 rows as
-validation data and 223,228 rows as testing data. The training data
-was used to fit each of the four models. The validation data was used
-to determine the best setup (tuning parameters) of each model in terms
-of mse, and the test data was used to compare the mse across methods.
+To fit the models, we divided the data into training set, validation
+set and testing set. The training set was used to fit each of the four
+models. The validation set was used to determine the best setup
+(tuning parameters) of each model in terms of MSE. Finally, the test
+set was used to compare the MSE across methods.
 
-We used the vector mse (put formula), and the 18 individual mse's (put
-formula) on the test data to compare across methods.
+The complete data consisted of 1,223,228 cells in 18 functional
+markers (responses) and 15 surface markers (predictors), which we
+divided as follows: 250,000 rows as training set, 250,000 rows as
+validation set, and 223,228 rows as testing set.
 
+We used two separate measure of performance: a vector MSE (equation
+\ref{vectorMSEformula}) and individual MSE (equation
+\ref{MSEformula}), one per predictor (so, 18 in total).
+
+The vector MSE is defined as
 \begin{equation}
 MSE_{vec} = \frac{1}{n} \sum_{i=1}^n ||\hat{Y}_i - Y_i ||^2_2
 \label{vectorMSEformula}
 \end{equation}
-
 where $\hat{Y}_i \in \mathbf{R}^{18}$ is the predicted vector of
 responses for individual $i$, and $Y_i \in \mathbf{R}^{18}$ is the
 observed vector of responses for individual $i$.
 
-The individual MSE was then defined for predictor $k$ as
+The individual MSE for predictor $k$ is defined  as
 \begin{equation}
 MSE_{(k)} = \frac{1}{n} \sum_{i=1}^n (\hat{Y}_{k,i} - Y_{k,i} )^2
 \label{MSEformula}
@@ -250,90 +253,165 @@ response ($k=1,\cdots,18$) for individual $i$, and $Y_{k,i} \in
 
 % https://github.com/pluskid/Mocha.jl/blob/master/docs/user-guide/solver.rst
 \vspace{0.25cm}
-\noindent \textbf{Neural network model} We tested different network
+\noindent \textbf{Neural network model:} We tested different network
 architectures, activation functions, regularization coefficients,
 solver methods, momentum policies, and learning rates. The best
-network has four layers (see figure xxx) with 90, 90, 45 and 45
+network has four layers (see figure \ref{nn}) with 90, 90, 45 and 45
 nodes. The network uses hyperbolic tangent as activation function,
-regularization coefficient 0.0001, momentum policy at 0.8, learning
-rates of (0.05, 0.01, 0.0001, 0.75).
+regularization coefficient of 0.0001, momentum policy at 0.8, learning
+rates of 0.01, 0.0001, 0.75. We used Adam solver\cite{Kingma2014}, an
+algorithm for first-order gradient-based optimization of stochastic
+objective functions, based on adaptive estimates of lower-order
+moments, instead of Stochastic Gradient Descent (SGD) as the former
+showed increased accuracy. All networks were trained using the julia
+package Mocha\missing{(reference)}.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{figures/neuralNet.eps}
+\caption{Neural network for predicting functional markers (18
+  responses) from surface markers (15 predictors) with 4 hidden
+  layers with 90, 90, 45 and 45 nodes each.}
+\label{nn}
+\end{figure}
 
 \vspace{0.25cm}
-\noindent \textbf{Linear regression (unpenalized/penalized)} We fit standard
-linear regression, as well as the penalized version with LASSO penalty
-under different penalization parameters. We used the
-\textit{ScikitLearn} julia wrapper, with default settings.
+\noindent \textbf{Linear regression (unpenalized/penalized):} We fit
+standard linear regression, as well as the penalized version with
+LASSO penalty under different penalization parameters. We used the
+\textit{ScikitLearn}\missing{(reference)} julia wrapper, with default
+settings. We noted that the penalized version performed worse than the
+unpenalized version for all the predictors (regardless of penalty
+parameter), so we only present results below for the unpenalized
+linear regression model.
 
 \vspace{0.25cm}
-\noindent \textbf{Decision tree and random trees} We fit one decision
+\noindent \textbf{Decision tree and random trees:} We fit one decision
 regression tree with \textit{ScikitLearn} julia wrapper, with default
 settings. We compared the performance of the ``mse'' criterion and the
 Friedman's improvement score, deciding on the former (``mse'') which
 is the default setting. We did not constraint the maximum depth of the
-tree, and used as 2 the minimum number of samples required to split an
-internal node. We did not constraint the maximum number of features to
-consider when looking for the best split. Later, we fit 20 trees into
-a random forest method, which showed good performance but not a lot of
-time waiting.
+tree, and set as 2 the minimum number of samples required to split an
+internal node. In addition, we did not constraint the maximum number
+of features to consider when looking for the best split. Later, we fit
+20 trees into a random forest method. We could explore more than 20
+trees due to computational time constraints.
+
 
 
 \section{Results}
 
-In Figure \ref{vectorMSE}, we have the comparison of the individual
-MSE per method, per response (18 functional markers). We can see in
-this plot that the neural network model outperforms the other standard
-approaches. In Figure \ref{vectorMSE}, we also see that the time is
-better for the neural network approach.
+Figure \ref{vectorMSE} (left) shows the vector MSE (equation
+\ref{vectorMSEformula}) across all four different methods, being
+decision tree the least accurate and neural network the most
+accurate. Figure \ref{vectorMSE} (right) shows a comparison on
+computation time (in seconds) among the four methods, being linear
+regression the fastest and random forest the slowest. To sum up, the
+neural network approach outperforms the other three methods in terms
+of prediction accuracy, without sacrificing too much computational
+speed.
+
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.35]{figures/vector-mse.pdf}
 \includegraphics[scale=0.35]{figures/time.pdf}
-\caption{Vector MSE for all 18 predictors as in formula
-  \ref{vectorMSEformula}, and running time in seconds.. We see that
-  the performance of neural network is better than all the
-  others, without being much slower.}
+\caption{Left: Vector MSE (equation \ref{vectorMSEformula}) for all
+  four methods sorted from most accurate (neural network) to least
+  accurate (decision tree). Right: Running time (in seconds) for the
+  training and validation sets (sample 750,000 rows) for all four
+  methods, sorted from fastest (linear regression) to slowest (random
+  forest).}
 \label{vectorMSE}
 \end{figure}
 
-In Figure \ref{MSE}, we have the comparison of the joint MSE for all 18
-responses. Here we can also see that the performance of neural network
-is better than other approaches.
+
+Figure \ref{MSE} shows the individual MSE (equation \ref{MSEformula})
+per predictor (18 predictors in x-axis) for each of the four
+methods. Again, the prediction accuracy of neural network is better
+than the other three methods for all the 18 predictors.
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.45]{figures/mse.pdf}
-\caption{MSE for each 18 predictors as in formula
-  \ref{MSEformula}. We see that the performance of neural
-  network is better than all the others. Lines drawn only to
-  appreciate the order among methods better.}
+\caption{Individual MSE (equation \ref{MSEformula}) for each 18
+  predictors. The neural network outperforms all other methods across
+  all predictors.  Lines are drawn simply for visual effect.}
 \label{MSE}
+\end{figure}
+
+Finally, we present a figure of the predicted response vs the observed
+response, for all the four methods and 18 functional markers (figure
+\ref{predObs}).
+
+\begin{figure}
+\centering
+%\includegraphics[scale=0.4]{figures/neuralNet.eps}
+\caption{Predicted vs observed responses across all functional markers
+  and all four methods. The closer the slope to 1, the
+  better.\missing{(missing this plot)}.}
+\label{predObs}
 \end{figure}
 
 
 
 \section{Discussion}
 
-We showed that neural network is better than other approaches, mostly
-due to the lack of simplifing assumptions like lienarity. The
-performance is better in terms of prediction accuracy (measured by
-mse) and computational time.
+In this work, we showed that a neural network model outperforms
+standard statistical approaches like linear regression and random
+forest in the prediction of functional markers from surface markers
+for CyTOF data. Neural networks were also faster and more efficient
+than random forests, which make them a more viable choice for big
+datasets.
 
-unlike regression, neural network takes advatange of the correlation
+The improved prediction accuracy of neural networks can be explained
+by their flexibility to account for non-linearity or skewness.  Unlike
+regression models, neural networks do not have linearity or normality
+assumptions, and they take advatange of the correlation structure
 among responses by fitting a network for the whole response vector.
 
-For future work, So, we have N experiments: N+1 matrices 100k by 50: B
-(baseline), $E_1,...,E_N$. We want to use the baseline information to
-predict the funcional markers at different experiments (see below for
-more details) (also, surface markers do not change). That is, use B to
-predict $E_i$ with a neural network. Using the individual 1 as
-training, we can then only get baseline information for future
-individuals and predict their functional markers. This is great
-because this experiments are expensive, so our method would be widely
-used to save money.
+As mentioned already, CyTOF data is perfectly suited for deep learning
+methods given the simulteanous measurement of a large number of
+protein markers, including both both identity markers and functional
+markers. Both measurements allow for the implementation of highly
+accurate supervised methods, like neural networks. In addition, the
+structure of CyTOF data is ideal for deep learning: number of samples
+orders of magnited greater than the number of variables.
+
+For future work, we can include an extended version of the
+dataset\cite{Bendall2011,Qiu2011} that includes 24 healthy sample of
+bone marrow treated by 24 different drugs. In this setting, we are
+interested in predicting the functional markers under different drug
+scenarios, using information at baseline (no treatment) and surface
+markers at different treatment levels.
+Furthermore, based on the trained deep learning model, we are
+interested in the question of whether we can identify cell clusters,
+and whether these cell clusters agree with well-accepted cell types in
+literature.
+Finally, if we focus on cells belonging to the same known cell type, and
+examine the distribution of functional markers and the correlation
+with the subtle variations of the identity markers among cells of this
+type, we can explore whether there is evidence that the specific cell
+type could be further divided into subtypes.
+
+
+
+% For future work, So, we have N experiments: N+1 matrices 100k by 50: B
+% (baseline), $E_1,...,E_N$. We want to use the baseline information to
+% predict the funcional markers at different experiments (see below for
+% more details) (also, surface markers do not change). That is, use B to
+% predict $E_i$ with a neural network. Using the individual 1 as
+% training, we can then only get baseline information for future
+% individuals and predict their functional markers. This is great
+% because this experiments are expensive, so our method would be widely
+% used to save money.
+
+
 
 
 
 %\input{references} %%originally referenc
+\bibliography{neural-nets}
+\bibliographystyle{nihunsrt} % Use the custom nihunsrt bibliography style included with the template
 
 \end{document}

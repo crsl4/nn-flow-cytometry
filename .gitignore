@@ -2,6 +2,7 @@ data
 resources
 *.hdf5
 *.jld
+emails.md
 
 # Compiled source #
 ###################

@@ -1,4 +1,5 @@
 data
+results
 resources
 *.hdf5
 *.jld

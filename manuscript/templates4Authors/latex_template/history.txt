@@ -64,7 +64,7 @@ date      filename   version  action/reason/acknowledgements
 
 15.04.03  svmult.cls    3.6   remove multiple info about language switch
                               caused by [german] option of "babel", bug reported
-                              by Rüdiger Wapler, Universität Tübingen,
+                              by Rï¿½diger Wapler, Universitï¿½t Tï¿½bingen,
                               corrected French translation of \bibname
 
 21.05.03  svmult.cls    3.7   added the titlepage environment, enhanced the
@@ -92,9 +92,9 @@ date      filename   version  action/reason/acknowledgements
 
 13.10.04  svmult.cls    3.15  fixed footnote layout when using footmisc package
 
-12.11.04  svmult.cls    3.16  corrected french spelling, grâce à Jean-Pierre
+12.11.04  svmult.cls    3.16  corrected french spelling, grï¿½ce ï¿½ Jean-Pierre
                               Francoise, Laboratoire Jacques-Louis Lions,
-                              Université Pierre et Marie Curie, Jussieu
+                              Universitï¿½ Pierre et Marie Curie, Jussieu
 
 20.03.05  svmult.cls    3.17  fixed \sidecaption; it was broken when used
                               along with hyperref package

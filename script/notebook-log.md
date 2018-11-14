@@ -1,10 +1,7 @@
 # To do
-- predicted vs observed responses plot (predictions.zip)
-- check all additions people: complete manuscript
+- put in 2 columns (6pages) format for http://sceweb.sce.uhcl.edu/bicob19/paper_submission.html ?
+- put in BMC format?
 
-# For meeting
-- see `hist-all.pdf`, not normal, does it matter for the neural network? see also transformed `hist-all-transformed.pdf`
-- scattermatrix: not so linear, we can look at other combinations
 
 # 0. Exploratory analysis
 - Using `scripts/exploratory.r`, which will read the raw data from `data/cytof-5-data`, and plot some exploratory things.

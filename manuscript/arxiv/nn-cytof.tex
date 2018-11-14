@@ -1,49 +1,121 @@
-%%%%%%%%%%%%%%%%%%%% author.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% sample root file for your "contribution" to a contributed volume
-%
-% Use this file as a template for your own input.
-%
-%%%%%%%%%%%%%%%% Springer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[conference]{IEEEtran}
+
+%========================================================================= PACKAGES
+\usepackage{amsmath,amssymb}
+\usepackage[mathscr]{euscript} %To be able to use script letters with \mathscr{}
+\usepackage{amsthm} %To be able to write Definitions, Theorems, etc.
+\usepackage{tikz} %To draw graphs.
+\usepackage{graphicx} % To scale equations
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}} % To scale equations
+\usepackage{framed} % To be able to frame theorems and stuff
+%\usepackage{float} %To be able to place figures exactly where I want with [H]
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{longtable}
+\usepackage{MnSymbol}
+\usepackage{xcolor}  \definecolor{shadecolor}{rgb}{.95,.95,.95}  %To put a shaded region
+\usepackage[numbers,square, comma, sort&compress]{natbib}	 %Make the references [1-8], rather than [1]-[8], as with \usepackage{cite}
+\renewcommand*{\bibfont}{\footnotesize} %Size of the references; only needed with natbib
+%\usepackage{makeidx} %To create an index
+%\makeindex
+\usepackage[hidelinks]{hyperref} %To be able to use links inside the document; [hidelinks removes the ugly red boxes]
+
+%==================================================== ALGORITHM SETUP
+\usepackage[ruled,vlined]{algorithm2e}
+
+%========================================================================= THEOREMS, LEMMAS, DEFINITIONS, ETC.
+\newtheorem{myDefinition}{Definition}
+\newtheorem{myTheorem}{Theorem}
+\newtheorem{myLemma}{Lemma}
+\newtheorem{myCorollary}{Corollary}
+\newtheorem{myProposition}{Proposition}
+\newtheorem{myExample}{Example}
+\newtheorem{myRemark}{Remark}
+\newtheorem{myConjecture}{Conjecture}
+\newtheorem{myQuestion}{Question}
+\newtheorem{myProblem}{Problem}
+
+%========================================================================= STUFF TO DRAW GRAPHS
+\tikzstyle{every edge}=  [draw]
+\tikzstyle{vertex} = [draw,circle,minimum size=1pt]
+\tikzstyle{label} = [minimum size=.1pt,font=\scriptsize]
+\tikzstyle{title} = [minimum size=.25cm,font=\small]
+
+%========================================================================= SYMBOLS
+%\newcommand{\var}[1]{\mathsf{#1}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\careful}{\textcolor{red}}
+\newcommand{\comment}{\textcolor{blue}}
+
+%Miscelaneous
+%\def \R{\mathbb{R}}
+%\def \P{\mathsf{P}}
+%\def \T{\mathsf{T}}
+%\def \c{\mathsf{c}}
+\def \spn{{\rm span}}
+\def \rnk{{\rm rank}}
+
+%Scalars
+\def \r{{\hyperref[rDef]{r}}}
+
+%text
+\def \as{{\hyperref[asDef]{{\rm a.s.}}}}
+%Assumptions
+\def \Cone{{\hyperref[ConeDef]{{\rm {\bf C1}}}}}
+%Theorems
+\def \mainThm{{\hyperref[mainThm]{Theorem \ref{mainThm}}}}
+%Sections
+\def \modelSec{{\hyperref[modelSec]{Section \ref{modelSec}}}}
+%Figures
+\def \distributionFig{{\hyperref[distributionFig]{Figure \ref{distributionFig}}}}
+%Algorithms
+\def \validationAlg{{\hyperref[validationAlg]{Algorithm \ref{validationAlg}}}}
 
 
-% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[graybox]{svmult}
+\newcounter{@inst}
+\newcounter{@auth}
+\newcounter{auco}
+\newdimen\instindent
+\newbox\authrun
+\newtoks\authorrunning
+\newtoks\tocauthor
+\newbox\titrun
+\newtoks\titlerunning
+\newtoks\toctitle
 
-% choose options for [] as required from the list
-% in the Reference Guide
+\def\clearheadinfo{\gdef\@author{No Author Given}%
+                   \gdef\@title{No Title Given}%
+                   \gdef\@subtitle{}%
+                   \gdef\@institute{}%
+                   \gdef\@thanks{}%
+                   \global\titlerunning={}\global\authorrunning={}%
+                   \global\toctitle={}\global\tocauthor={}}
 
-\usepackage{mathptmx}       % selects Times Roman as basic font
-\usepackage{helvet}         % selects Helvetica as sans-serif font
-\usepackage{courier}        % selects Courier as typewriter font
-\usepackage{type1cm}        % activate if the above 3 fonts are
-                            % not available on your system
-%
-\usepackage{makeidx}         % allows index generation
-\usepackage{graphicx}        % standard LaTeX graphics tool
-                             % when including figure files
-\usepackage{multicol}        % used for the two-column index
-\usepackage[bottom]{footmisc}% places footnotes at page bottom
+\def\institute#1{\gdef\@institute{#1}}
 
-% see the list of further useful packages
-% in the Reference Guide
+\def\institutename
+ {\begingroup
+ \if!\@institute!\else
+ \def\thanks##1{\unskip{}}%
+ \def\iand{\\[5pt]\let\and=\nand}%
+ \def\nand{\ifhmode\unskip\nobreak\fi\ $\cdot$ }%
+ \let\and=\nand
+ \def\at{\\\let\and=\iand}%
+ \footnotetext[0]{\kern-\bibindent
+ \ignorespaces\@institute}\vspace{5dd}\fi
+ \endgroup
+ }%
 
-\makeindex             % used for the subject index
-                       % please use the style svind.ist with
-                       % your makeindex program
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% track changes
-\usepackage[normalem]{ulem}
-\usepackage[dvipsnames]{xcolor}
-\newcommand{\claudia}[2]{\sout{#1}\textcolor{magenta}{\textbf{#2}}}
-\newcommand{\missing}[1]{\textcolor{red}{\textbf{#1}}}
-
+% correct bad hyphenation here
+%\hyphenation{op-tical net-works semi-conduc-tor}
 
 \begin{document}
 
-\title*{Prediction of functional markers of mass cytometry data via
+\title{Prediction of functional markers of mass cytometry data via
   deep learning}
 % Use \titlerunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
@@ -70,9 +142,30 @@
 %
 \maketitle
 
-\abstract{Recently, there has been an increasing interest in the analysis of flow cytometry data, which involves measurements of a set of surface and functional markers across hundreds and thousands of cells. These measurements can often be used to differentiate various cell types and there has been a rapid development of analytic approaches for achieving this. However, in spite of the fact that measurements are available on such a large number of cells, there have been very limited advances in deep learning approaches for the analysis of flow cytometry data. Some preliminary work has focused on using deep learning techniques to classify cell types based on the cell protein measurements. In a first of its' kind study, we propose a novel deep learning architecture for predicting functional markers in the cells given data on surface markers. Such an approach is expected to automate the measurement of functional markers across cell samples, provided data on the surface markers are available, that has important practical advantages. We validate and compare our approach with competing machine learning methods using a real flow cytometry dataset, and showcase the improved prediction performance of the deep learning architecture.}
+\begin{abstract}
+Recently, there has been an increasing interest in the analysis of
+flow cytometry data, which involves measurements of a set of surface
+and functional markers across hundreds and thousands of cells. These
+measurements can often be used to differentiate various cell types and
+there has been a rapid development of analytic approaches for
+achieving this. However, in spite of the fact that measurements are
+available on such a large number of cells, there have been very
+limited advances in deep learning approaches for the analysis of flow
+cytometry data. Some preliminary work has focused on using deep
+learning techniques to classify cell types based on the cell protein
+measurements. In a first of its' kind study, we propose a novel deep
+learning architecture for predicting functional markers in the cells
+given data on surface markers. Such an approach is expected to
+automate the measurement of functional markers across cell samples,
+provided data on the surface markers are available, that has important
+practical advantages. We validate and compare our approach with
+competing machine learning methods using a real flow cytometry
+dataset, and showcase the improved prediction performance of the deep
+learning architecture.
+\end{abstract}
 
 \section{Introduction}
+
 
 % from Peng Qui PQ.docx: ---
 Multiparametric single-cell analysis has advanced our understanding of
@@ -136,6 +229,20 @@ regression techniques.
 
 \section{Data}
 
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.35]{figures/surface-hist.pdf}
+\includegraphics[scale=0.35]{figures/functional-hist.pdf}
+\includegraphics[scale=0.35]{figures/scatterplot.pdf}
+\caption{Exploratory plots of surface and functional markers. The
+  histograms show a biased pattern, and the scatterplot shows non
+  linearity, both violations of crucial assumptions in standard
+  regression models.}
+\label{exploratory}
+\end{figure*}
+
+
 \subsection{Pre-processing}
 
 The CyTOF dataset has been previously published in
@@ -147,6 +254,7 @@ The data was transformed with inverse hyperbolic sine function
 for CyTOF data \cite{Bendall2011}.
 
 
+
 \subsection{Exploratory analysis}
 
 We will compare the performance of different methods (explained next
@@ -156,17 +264,6 @@ fundamental assumptions of standard statistical approaches (like
 regression). For example, the data is highly skewed and the pattern
 between response and predictor is not linear (see figure
 \ref{exploratory}). 
-
-\begin{figure}
-\includegraphics[scale=0.3]{figures/surface-hist.pdf}
-\includegraphics[scale=0.3]{figures/functional-hist.pdf}
-\includegraphics[scale=0.3]{figures/scatterplot.pdf}
-\caption{Exploratory plots of surface and functional markers. The
-  histograms show a biased pattern, and the scatterplot shows non
-  linearity, both violations of crucial assumptions in standard
-  regression models.}
-\label{exploratory}
-\end{figure}
 
 
 \section{Materials and Methods}
@@ -248,6 +345,17 @@ where $\hat{Y}_{k,i} \in \mathbf{R}$ is the $k^{th}$ predicted
 response ($k=1,\cdots,18$) for individual $i$, and $Y_{k,i} \in
 \mathbf{R}$ is the $k^{th}$ observed response for individual $i$.
 
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.4]{figures/neuralNet.eps}
+\caption{Neural network for predicting functional markers (18
+  responses) from surface markers (15 predictors) with 4 hidden
+  layers with 90, 90, 45 and 45 nodes each.}
+\label{nn}
+\end{figure*}
+
+
 % https://github.com/pluskid/Mocha.jl/blob/master/docs/user-guide/solver.rst
 \vspace{0.25cm}
 \noindent \textbf{Neural network model:} We tested different network
@@ -262,15 +370,6 @@ objective functions, based on adaptive estimates of lower-order
 moments, instead of Stochastic Gradient Descent (SGD) as the former
 showed increased accuracy. All networks were trained using the julia
 package \texttt{Mocha}\cite{Bezanson2017,mocha}.
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.4]{figures/neuralNet.eps}
-\caption{Neural network for predicting functional markers (18
-  responses) from surface markers (15 predictors) with 4 hidden
-  layers with 90, 90, 45 and 45 nodes each.}
-\label{nn}
-\end{figure}
 
 \vspace{0.25cm}
 \noindent \textbf{Linear regression (unpenalized/penalized):} We fit
@@ -311,8 +410,8 @@ speed.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.35]{figures/vector-mse.pdf}
-\includegraphics[scale=0.35]{figures/time.pdf}
+\includegraphics[scale=0.45]{figures/vector-mse.pdf}
+\includegraphics[scale=0.45]{figures/time.pdf}
 \caption{Left: Vector MSE (equation \ref{vectorMSEformula}) for all
   four methods sorted from most accurate (neural network) to least
   accurate (decision tree). Right: Running time (in seconds) for the
@@ -341,23 +440,23 @@ The MSE performance varies across responses. For example, the first response (fu
 
 Figure \ref{violin} (left) shows the violin plots for these 4 functional markers. We observe that the 14th response has a wider range and heavier tails than the other responses, which is confirmed in the scatterplots on the center and right (figure \ref{violin}). It appears that the wider spread and higher variability of the 14th response (functional marker 171.pBtk.Itk) causes the lower prediction accuracy compared to other responses, like the first one (functional marker 141.pPLCgamma2).
 
-\begin{figure}
+\begin{figure*}
 \centering
-\includegraphics[scale=0.3]{figures/violin.pdf} \hspace{0.25cm}
-\includegraphics[scale=0.3]{figures/response1.pdf}
+\includegraphics[scale=0.35]{figures/violin.pdf} \hspace{0.25cm}
+\includegraphics[scale=0.35]{figures/response1.pdf}
 \hspace{0.25cm}
-\includegraphics[scale=0.3]{figures/response14.pdf}
+\includegraphics[scale=0.35]{figures/response14.pdf}
 \caption{Left: Violin plot for four functional markers (responses). Horizontal lines represent the 25th quantile, median and 75th quantile. Center: Predicted vs observed responses on the first functional marker (141.pPLCgamma2)
   across all four methods. Left: Predicted vs observed responses on the 14th functional marker (171.pBtk.Itk)
   across all four methods. The closer the slope to 1 (black line), the
   better.}
 \label{violin}
-\end{figure}
+\end{figure*}
 
 Finally, we present selected scatterplots of surface markers as predictors for the responses 1,3,8 and 14 (figure
 \ref{predObs}). We can appreciate in these plots the non-linear relationship between the predictors and responses, which justifies the use of a neural network approach.
 
-\begin{figure}
+\begin{figure}[ht]
 \centering
 \includegraphics[scale=0.3]{figures/scatterplot1.pdf} \hspace{0.5cm}
 \includegraphics[scale=0.3]{figures/scatterplot14.pdf}
@@ -422,11 +521,20 @@ type could be further divided into subtypes.
 % used to save money.
 
 
-
-
-
 %\input{references} %%originally referenc
 \bibliography{neural-nets}
 \bibliographystyle{nihunsrt} % Use the custom nihunsrt bibliography style included with the template
 
+
+% %======================================================= MAIN THEOREM
+% \begin{framed}
+% \begin{myTheorem}
+% \label{mainThm}
+% Write Theorem
+% \end{myTheorem}
+% \end{framed}
+
+
 \end{document}
+
+

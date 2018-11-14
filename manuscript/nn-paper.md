@@ -15,3 +15,7 @@
 
 # Manuscript
 We copied the `author.tex` as `author-orig.tex`, and then modified the `author.tex` directly.
+
+Note that `latex_template_old.zip` has the original paper, and `latex_template` has the one after everybody modified the manuscript on Overleaf (11/6/18).
+
+We will extract the manuscript at this stage, and create a new version for arxiv, in folder `arxiv`.

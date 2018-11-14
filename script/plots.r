@@ -181,12 +181,12 @@ p <- ggplot(dff,aes(x=pred,y=mse,col=method))+geom_point() + geom_line()+
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
         axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
         axis.text.y = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
-        panel.background = element_blank(),
+        legend.text=element_text(size=rel(1.2)),
+        panel.background = element_blank(),legend.title=element_blank(),
         axis.line = element_line(colour = "grey")
         ) +
     scale_x_continuous(breaks=c(1:18))+
-    xlab("Predictor") + ylab("MSE")
+    xlab("Response") + ylab("MSE")
 
 
 pdf("mse.pdf",width=8,height=5.5)
@@ -195,3 +195,179 @@ dev.off()
 
 
 
+########
+## Plots per response
+## We will focus in response 1 (good), 3, 8, 14 (bad)
+
+dat1 = read.table("../results/Predictions/Test_1.txt", header=TRUE)
+dat3 = read.table("../results/Predictions/Test_3.txt", header=TRUE)
+dat8 = read.table("../results/Predictions/Test_8.txt", header=TRUE)
+dat14 = read.table("../results/Predictions/Test_14.txt", header=TRUE)
+
+newdat = data.frame(response = c(dat1$True,dat3$True,dat8$True,dat14$True),
+    which = c(rep(1,length(dat1$True)),rep(3,length(dat3$True)),rep(8,length(dat8$True)),rep(14,length(dat14$True)))
+    )
+str(newdat)
+
+library(ggplot2)
+library(viridis)
+vpal = viridis(4,end=0.9)
+
+p <- ggplot(newdat,aes(x=factor(which),y=response, fill=factor(which)))+geom_violin(draw_quantiles = c(0.25, 0.5, 0.75))+
+    scale_fill_manual(values=vpal) +
+    scale_x_discrete(name="Response") +
+    scale_y_continuous(name="") +
+    theme(
+        plot.title = element_text(hjust=0.5, size=rel(1.8)),
+        axis.title.x = element_text(size=rel(1.8)),
+        axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
+        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "grey"),
+        legend.position = "none"
+        )
+
+pdf("../manuscript/templates4Authors/latex_template/figures/violin.pdf",width=4,height=4)
+p
+dev.off()
+
+
+## Response 14
+ntot = length(dat14$True)
+n = floor(0.01*ntot)
+ind = sample(1:ntot,n,replace=FALSE)
+
+true = c(dat14$True[ind],dat14$True[ind],dat14$True[ind],dat14$True[ind])
+pred = c(dat14$LR[ind], dat14$DTR[ind], dat14$RFR[ind], dat14$NN[ind])
+method = c(rep("Linear Model",n),rep("Decision Tree",n),
+    rep("Random Forest",n),rep("Neural Network",n))
+
+
+newdat2 = data.frame(true=true,pred=pred,method=method)
+str(newdat2)
+
+p <- ggplot(newdat2,aes(x=true,y=pred, col=method))+geom_point(alpha=0.1)+
+    geom_smooth(method='lm')+
+    geom_abline(slope=1, col="black")+
+    scale_x_continuous(name="True 14th response", limits=c(-3,7.5)) +
+    scale_y_continuous(name="Predicted 14th response", limits=c(-3, 7.5)) +
+    theme(
+        plot.title = element_text(hjust=0.5, size=rel(1.8)),
+        axis.title.x = element_text(size=rel(1.8)),
+        axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
+        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "grey"),
+        )
+
+pdf("../manuscript/templates4Authors/latex_template/figures/response14.pdf",width=6,height=4)
+p
+dev.off()
+
+## Response 1
+ntot = length(dat1$True)
+n = floor(0.01*ntot)
+ind = sample(1:ntot,n,replace=FALSE)
+
+true = c(dat1$True[ind],dat1$True[ind],dat1$True[ind],dat1$True[ind])
+pred = c(dat1$LR[ind], dat1$DTR[ind], dat1$RFR[ind], dat1$NN[ind])
+method = c(rep("Linear Model",n),rep("Decision Tree",n),
+    rep("Random Forest",n),rep("Neural Network",n))
+
+
+newdat2 = data.frame(true=true,pred=pred,method=method)
+str(newdat2)
+
+p <- ggplot(newdat2,aes(x=true,y=pred, col=method))+geom_point(alpha=0.1)+
+    geom_smooth(method='lm')+
+    geom_abline(slope=1, col="black")+
+    scale_x_continuous(name="True 1st response", limits=c(-3,7.5)) +
+    scale_y_continuous(name="Predicted 1st response", limits=c(-3,7.5)) +
+    theme(
+        plot.title = element_text(hjust=0.5, size=rel(1.8)),
+        axis.title.x = element_text(size=rel(1.8)),
+        axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
+        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "grey"),
+        legend.position="none"
+        )
+
+pdf("../manuscript/templates4Authors/latex_template/figures/response1.pdf",width=4,height=4)
+p
+dev.off()
+
+
+## Scatterplots
+
+## Response 14
+pdat = read.table("../results/Predictions/Test_pred.txt", header=TRUE)
+str(pdat)
+colnames(pdat) = c("X191.DNA","X193.DNA","X115.CD45","X139.CD45RA","X142.CD19","X144.CD11b","X145.CD4","X146.CD8","X148.CD34","X147.CD20","X158.CD33","X160.CD123","X167.CD38","X170.CD90","X110.114.CD3")
+rdat = read.table("../results/Predictions/Test_14.txt", header=TRUE)
+str(rdat)
+
+dat = cbind(pdat,rdat)
+str(dat)
+
+n = length(dat$NN)
+prop = 0.01
+subdat = dat[sample(1:n,floor(prop*n),replace=FALSE),]
+str(subdat)
+
+library(ggplot2)
+p <- ggplot(subdat, aes(x=X115.CD45,y=True)) + geom_point(alpha=0.1) + geom_smooth()+
+    scale_y_continuous(limits=c(-3,7.5))+
+        theme(
+        plot.title = element_text(hjust=0.5, size=rel(1.8)),
+        axis.title.x = element_text(size=rel(1.8)),
+        axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
+        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "grey")
+        ) +
+    xlab("Surface marker (115.CD45)") + ylab("Functional marker (171.pBtk.Itk)")
+
+pdf("scatterplot14.pdf",width=6, height=6)
+p
+dev.off()
+
+
+## Response 1
+rdat = read.table("../results/Predictions/Test_1.txt", header=TRUE)
+str(rdat)
+
+dat = cbind(pdat,rdat)
+str(dat)
+
+n = length(dat$NN)
+prop = 0.01
+subdat = dat[sample(1:n,floor(prop*n),replace=FALSE),]
+str(subdat)
+
+library(ggplot2)
+p <- ggplot(subdat, aes(x=X115.CD45,y=True)) + geom_point(alpha=0.1) + geom_smooth()+
+    scale_y_continuous(limits=c(-3,7.5))+
+        theme(
+        plot.title = element_text(hjust=0.5, size=rel(1.8)),
+        axis.title.x = element_text(size=rel(1.8)),
+        axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
+        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "grey")
+        ) +
+    xlab("Surface marker (115.CD45)") + ylab("Functional marker (141.pPLCgamma2)")
+
+pdf("scatterplot1.pdf",width=6, height=6)
+p
+dev.off()

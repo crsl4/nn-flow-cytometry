@@ -47,8 +47,8 @@ using ScikitLearn
 tic()
 lr = fit!(LinearRegression(),dfpredTrain,dfrespTrain)
 toc()  ## 1.98s
-lr_pred = predict(lr,dfpredValid)
-diff = mapslices(Base.norm, lr_pred - dfrespValid,[2])
+lr_vlpred = predict(lr,dfpredValid)
+diff = mapslices(Base.norm, lr_vlpred - dfrespValid,[2])
 lr_vec_loss = sum(diff.^2)/(2*size(diff)[1])
 # no regularity, mse = 6.7036
 
@@ -68,13 +68,13 @@ vec_loss  ## 7.0253, 9.0376, 9.1934, 9.1934, 9.1934
 ## choose linear regression with no regulation
 @sk_import linear_model: LinearRegression
 lr = fit!(LinearRegression(),dfpredTrain,dfrespTrain)
-lr_pred = predict(lr,dfpredTest)
-diff = mapslices(Base.norm, lr_pred - dfrespTest,[2])
+lr_tepred = predict(lr,dfpredTest)
+diff = mapslices(Base.norm, lr_tepred - dfrespTest,[2])
 lr_vec_loss = sum(diff.^2)/(2*size(diff)[1])  ## 6.7148
 # MSE for individual response
 lr_pt_loss=zeros(18)
 for i=1:18
-    lr_pt_loss[i] = sum((lr_pred[:,i]-dfrespTest[:,i]).^2)/(2*size(lr_pred)[1])
+    lr_pt_loss[i] = sum((lr_tepred[:,i]-dfrespTest[:,i]).^2)/(2*size(lr_tepred)[1])
 end
 lr_pt_loss  ## 0.2308, 0.4301, 0.5954, 0.2353, 0.2490, 0.2427
             ## 0.2414, 0.3983, 0.2016, 0.3520, 0.2792, 0.4322
@@ -86,19 +86,19 @@ lr_pt_loss  ## 0.2308, 0.4301, 0.5954, 0.2353, 0.2490, 0.2427
 tic()
 dtr = fit!(DecisionTreeRegressor(criterion="mse"),dfpredTrain,dfrespTrain)
 toc()  ## 63.36s
-dtr_pred = predict(dtr,dfpredValid)
-diff = mapslices(Base.norm,dtr_pred-dfrespValid,[2])
+dtr_vlpred = predict(dtr,dfpredValid)
+diff = mapslices(Base.norm,dtr_vlpred-dfrespValid,[2])
 vec_loss = sum(diff.^2)/(2*size(diff)[1])
 ## default setting: 11.5040
 ## "friedman_mse": 11.9040
 ## choose mse criterion for testing data
-dtr_pred = predict(dtr,dfpredTest)
-diff = mapslices(Base.norm,dtr_pred-dfrespTest,[2])
+dtr_tepred = predict(dtr,dfpredTest)
+diff = mapslices(Base.norm,dtr_tepred-dfrespTest,[2])
 dtr_vec_loss = sum(diff.^2)/(2*size(diff)[1]) ## 11.5280
 # MSE for individual response
 dtr_pt_loss=zeros(18)
 for i=1:18
-    dtr_pt_loss[i] = sum((dtr_pred[:,i]-dfrespTest[:,i]).^2)/(2*size(dtr_pred)[1])
+    dtr_pt_loss[i] = sum((dtr_tepred[:,i]-dfrespTest[:,i]).^2)/(2*size(dtr_tepred)[1])
 end
 dtr_pt_loss  ## 0.4207, 0.7510, 0.8740, 0.4556, 0.4644, 0.4460,
              ## 0.4363, 0.7468, 0.3831, 0.5550, 0.4696, 0.6693,
@@ -110,19 +110,19 @@ dtr_pt_loss  ## 0.4207, 0.7510, 0.8740, 0.4556, 0.4644, 0.4460,
 tic()
 rfr = fit!(RandomForestRegressor(n_estimators=20),dfpredTrain,dfrespTrain)
 toc()  ## 826.83s
-rfr_pred = predict(rfr,dfpredValid)
-diff = mapslices(Base.norm,rfr_pred-dfrespValid,[2])
+rfr_vlpred = predict(rfr,dfpredValid)
+diff = mapslices(Base.norm,rfr_vlpred-dfrespValid,[2])
 vec_loss = sum(diff.^2)/(2*size(diff)[1])
 ## 10 trees: 6.2226
 ## 20 trees: 5.9319
 ## use 20 trees for testing data for now due to limited time
-rfr_pred = predict(rfr,dfpredTest)
-diff = mapslices(Base.norm,rfr_pred-dfrespTest,[2])
+rfr_tepred = predict(rfr,dfpredTest)
+diff = mapslices(Base.norm,rfr_tepred-dfrespTest,[2])
 rfr_vec_loss = sum(diff.^2)/(2*size(diff)[1]) ## 5.9503
 # MSE for individual response
 rfr_pt_loss=zeros(18)
 for i=1:18
-    rfr_pt_loss[i] = sum((rfr_pred[:,i]-dfrespTest[:,i]).^2)/(2*size(rfr_pred)[1])
+    rfr_pt_loss[i] = sum((rfr_tepred[:,i]-dfrespTest[:,i]).^2)/(2*size(rfr_tepred)[1])
 end
 rfr_pt_loss  ## 0.2183, 0.3881, 0.4480, 0.2374, 0.2429, 0.2321,
              ## 0.2278, 0.3863, 0.2005, 0.2869, 0.2441, 0.3433,
@@ -131,10 +131,10 @@ rfr_pt_loss  ## 0.2183, 0.3881, 0.4480, 0.2374, 0.2429, 0.2321,
 ###########################################################################
 ## support vector regression, can only train scalar response
 ## toooooo slow, more than three hours unfinished
-@sk_import svm: SVR
-svr = fit!(SVR(kernel="rbf",gamma=0.1),dfpredTrain,dfrespTrain[:,1])
-svr_pred = predict(svr,dfpredValid)
-pt_loss = sum((svr_pred-dfrespValid[:,1]).^2)/(2*size(svr_pred)[1])
+# @sk_import svm: SVR
+# svr = fit!(SVR(kernel="rbf",gamma=0.1),dfpredTrain,dfrespTrain[:,1])
+# svr_pred = predict(svr,dfpredValid)
+# pt_loss = sum((svr_pred-dfrespValid[:,1]).^2)/(2*size(svr_pred)[1])
 ## 'rbf',gamma=[0.1,auto]:
 ## 'poly',degree=[3,2,4]:
 ## 'sigmoid',gamma=[auto,0.1]: 
@@ -230,23 +230,24 @@ destroy(test_net)
 destroy(final_net)
 shutdown(backend)
 
+## load prediction for MSE calculation
 using HDF5
-vlpred = h5open("cytof-5-vlpred.h5", "r") do file
+nn_vlpred = h5open("cytof-5-vlpred.h5", "r") do file
     read(file, "ip5")
 end
-tepred = h5open("cytof-5-tepred.h5", "r") do file
+nn_tepred = h5open("cytof-5-tepred.h5", "r") do file
     read(file, "ip5")
 end
 ## validation mse 5.6334
-diff = mapslices(Base.norm,vlpred-vlY,[1])
+diff = mapslices(Base.norm,nn_vlpred-vlY,[1])
 vec_loss = sum(diff.^2)/(2*size(diff)[2])
 ## testing mse
-diff = mapslices(Base.norm,tepred-teY,[1])
+diff = mapslices(Base.norm,nn_tepred-teY,[1])
 nn_vec_loss = sum(diff.^2)/(2*size(diff)[2]) ## 5.6447
 # MSE for individual response
 nn_pt_loss=zeros(18)
 for i=1:18
-    nn_pt_loss[i] = sum((tepred[i,:]-teY[i,:]).^2)/(2*size(tepred)[2])
+    nn_pt_loss[i] = sum((nn_tepred[i,:]-teY[i,:]).^2)/(2*size(nn_tepred)[2])
 end
 nn_pt_loss  ## 0.2067, 0.3586, 0.4266, 0.2254, 0.2331, 0.2212,
             ## 0.2172, 0.3665, 0.1904, 0.2735, 0.2315, 0.3271,
@@ -267,3 +268,15 @@ nn_pt_loss  ## 0.2067, 0.3586, 0.4266, 0.2254, 0.2331, 0.2212,
 ## as * enlarge layers[180,90,45]  : 5.6654 /te: 5.6735
 ## * [360,90,45]                   : 5.6805 /te: 5.6919
 ## * one more layer[90,90,45,45]   : 5.6433 /te: 5.6568 ** (results rerun)
+
+#########################################################################
+## create dataframe file for validation / testing prediction values wit true values
+nn_vlpred = transpose(nn_vlpred)
+nn_tepred = transpose(nn_tepred)
+
+for k=1:18
+    Valid = DataFrame(True=dfrespValid[:,k],LR=lr_vlpred[:,k],DTR=dtr_vlpred[:,k],RFR=rfr_vlpred[:,k],NN=nn_vlpred[:,k])
+    Test = DataFrame(True=dfrespTest[:,k],LR=lr_tepred[:,k],DTR=dtr_tepred[:,k],RFR=rfr_tepred[:,k],NN=nn_tepred[:,k])
+    CSV.write(string("Valid_",k,".txt"),Valid,delim='\t')
+    CSV.write(string("Test_",k,".txt"),Test,delim='\t')
+end

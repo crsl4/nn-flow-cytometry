@@ -5,7 +5,7 @@ We thank the reviewers for such insightful comments which had certainly improved
 ## From reviewer 1
 
 1. "For the deep learning framework, there is not too much novelty. In my opinion, the paper is a pioneer of practitioner of the deep learning in their specific research area."
-We agree! Neural networks are widely studied models that have been applied to a variety of real-life datasets. We are not proposing new model developments for this area of neural network, we are applying existing neural network tools to the case of flow cytometry area which has not fully adopted the deep learning schemes yet.
+We agree! Neural networks are widely studied models that have been applied to a variety of real-life datasets. We are not proposing new model developments for the area of neural network; we are applying existing neural network tools to the case of flow cytometry area which has not fully adopted the deep learning schemes yet.
 We added these points in the introduction/discussion
 
 2. "When they split the data into training, validation, test datasets, it’s better to follow the cross-validation schema, that is, try different repetition and report the average results to reduce the randomness."

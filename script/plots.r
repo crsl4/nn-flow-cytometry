@@ -214,11 +214,18 @@ dev.off()
 ## Plots per response
 ## We will focus in response 1 (good), 3, 8, 14 (bad)
 
-## aqui voy: Waiting for the revised files after CV model fit
+## Original
 dat1 = read.table("../results/Predictions/Test_1.txt", header=TRUE)
 dat3 = read.table("../results/Predictions/Test_3.txt", header=TRUE)
 dat8 = read.table("../results/Predictions/Test_8.txt", header=TRUE)
 dat14 = read.table("../results/Predictions/Test_14.txt", header=TRUE)
+
+## Revision
+dat1 = read.table("../results/Test_prediction/Test_1_revision.txt", header=TRUE)
+dat3 = read.table("../results/Test_prediction/Test_3_revision.txt", header=TRUE)
+dat8 = read.table("../results/Test_prediction/Test_8_revision.txt", header=TRUE)
+dat14 = read.table("../results/Test_prediction/Test_14_revision.txt", header=TRUE)
+
 
 newdat = data.frame(response = c(dat1$True,dat3$True,dat8$True,dat14$True),
     which = c(rep(1,length(dat1$True)),rep(3,length(dat3$True)),rep(8,length(dat8$True)),rep(14,length(dat14$True)))
@@ -237,15 +244,16 @@ p <- ggplot(newdat,aes(x=factor(which),y=response, fill=factor(which)))+geom_vio
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
         panel.background = element_blank(),
-        axis.line = element_line(colour = "grey"),
+        axis.line = element_line(colour = "black"),
         legend.position = "none"
         )
 
-pdf("../manuscript/templates4Authors/latex_template/figures/violin.pdf",width=4,height=4)
+##pdf("../manuscript/templates4Authors/latex_template/figures/violin.pdf",width=4,height=4)
+pdf("../revision/latex_template/figures/violin.pdf",width=4,height=4)
 p
 dev.off()
 
@@ -273,14 +281,15 @@ p <- ggplot(newdat2,aes(x=true,y=pred, col=method))+geom_point(alpha=0.1)+
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
         panel.background = element_blank(),
-        axis.line = element_line(colour = "grey"),
+        axis.line = element_line(colour = "black"),
         )
 
-pdf("../manuscript/templates4Authors/latex_template/figures/response14.pdf",width=6,height=4)
+##pdf("../manuscript/templates4Authors/latex_template/figures/response14.pdf",width=6,height=4)
+pdf("../revision/latex_template/figures/response14.pdf",width=6,height=4)
 p
 dev.off()
 
@@ -307,15 +316,16 @@ p <- ggplot(newdat2,aes(x=true,y=pred, col=method))+geom_point(alpha=0.1)+
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)), legend.title=element_blank(),
         panel.background = element_blank(),
-        axis.line = element_line(colour = "grey"),
+        axis.line = element_line(colour = "black"),
         legend.position="none"
         )
 
-pdf("../manuscript/templates4Authors/latex_template/figures/response1.pdf",width=4,height=4)
+##pdf("../manuscript/templates4Authors/latex_template/figures/response1.pdf",width=4,height=4)
+pdf("../revision/latex_template/figures/response1.pdf",width=4,height=4)
 p
 dev.off()
 
@@ -326,7 +336,12 @@ dev.off()
 pdat = read.table("../results/Predictions/Test_pred.txt", header=TRUE)
 str(pdat)
 colnames(pdat) = c("X191.DNA","X193.DNA","X115.CD45","X139.CD45RA","X142.CD19","X144.CD11b","X145.CD4","X146.CD8","X148.CD34","X147.CD20","X158.CD33","X160.CD123","X167.CD38","X170.CD90","X110.114.CD3")
+
+## Original
 rdat = read.table("../results/Predictions/Test_14.txt", header=TRUE)
+## Revision
+rdat = read.table("../results/Test_prediction/Test_14_revision.txt", header=TRUE)
+
 str(rdat)
 
 dat = cbind(pdat,rdat)
@@ -344,11 +359,11 @@ p <- ggplot(subdat, aes(x=X115.CD45,y=True)) + geom_point(alpha=0.1) + geom_smoo
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
         panel.background = element_blank(),
-        axis.line = element_line(colour = "grey")
+        axis.line = element_line(colour = "black")
         ) +
     xlab("Surface marker (115.CD45)") + ylab("Functional marker (171.pBtk.Itk)")
 
@@ -358,7 +373,12 @@ dev.off()
 
 
 ## Response 1
+
+## Original
 rdat = read.table("../results/Predictions/Test_1.txt", header=TRUE)
+## Revision
+rdat = read.table("../results/Test_prediction/Test_1_revision.txt", header=TRUE)
+
 str(rdat)
 
 dat = cbind(pdat,rdat)
@@ -376,11 +396,11 @@ p <- ggplot(subdat, aes(x=X115.CD45,y=True)) + geom_point(alpha=0.1) + geom_smoo
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=90, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
         panel.background = element_blank(),
-        axis.line = element_line(colour = "grey")
+        axis.line = element_line(colour = "black")
         ) +
     xlab("Surface marker (115.CD45)") + ylab("Functional marker (141.pPLCgamma2)")
 

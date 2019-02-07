@@ -1,7 +1,6 @@
 # To do
-- improve writing based on review1 (doc file)
-- improve writing and plots based on review2 (below)
-- answers to reviewers
+- wait for xin for the "plots per response"
+- go over answers to reviewers and fix paper and answers
 
 Report 1:
 
@@ -18,6 +17,8 @@ The quality of the figures can be improved. Some labels in the figure are in lig
 
 
 It would be good if the data used in this study can be made available to the public so that it can be served as a benchmark for studies in the community.
+
+> From Peng: The data is already publically available from the original paper that published the experiment, although one needs to learn a little bit about Cytobank to be able to get the data. Here is the link: http://reports.cytobank.org/1/v1
 
 
 # Email to group

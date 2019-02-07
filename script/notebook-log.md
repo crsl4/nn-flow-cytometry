@@ -29,3 +29,8 @@
 - Using `script/fit-nn.jl`. Considerations:
     - response is a real number, so we can have big errors by using one node at the end; but creating categories is not good idea either
     - We will start with the same network architecture as in Liu 2017: depth-4 feed-forward neural network with three softplus hidden layers and a softmax output layer. The hidden layer sizes are set to 12,6,3.
+
+# 3. Comparing analyses
+
+Scripts `analysis-comb.jl` for original submission, and `analysis-comb-cv.jl` for revision.
+Results are saved in this file and then copy-pasted in `plots.r` for the final plots.

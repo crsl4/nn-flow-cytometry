@@ -70,7 +70,25 @@
 %
 \maketitle
 
-\abstract{Recently, there has been an increasing interest in the analysis of flow cytometry data, which involves measurements of a set of surface and functional markers across hundreds and thousands of cells. These measurements can often be used to differentiate various cell types and there has been a rapid development of analytic approaches for achieving this. However, in spite of the fact that measurements are available on such a large number of cells, there have been very limited advances in deep learning approaches for the analysis of flow cytometry data. Some preliminary work has focused on using deep learning techniques to classify cell types based on the cell protein measurements. In a first of its' kind study, we propose a novel deep learning architecture for predicting functional markers in the cells given data on surface markers. Such an approach is expected to automate the measurement of functional markers across cell samples, provided data on the surface markers are available, that has important practical advantages. We validate and compare our approach with competing machine learning methods using a real flow cytometry dataset, and showcase the improved prediction performance of the deep learning architecture.}
+\abstract{Recently, there has been an increasing interest in the
+  analysis of flow cytometry data, which involves measurements of a
+  set of surface and functional markers across hundreds and thousands
+  of cells. These measurements can often be used to differentiate
+  various cell types and there has been a rapid development of
+  analytic approaches for achieving this. However, in spite of the
+  fact that measurements are available on such a large number of
+  cells, there have been very limited advances in deep learning
+  approaches for the analysis of flow cytometry data. Some preliminary
+  work has focused on using deep learning techniques to classify cell
+  types based on the cell protein measurements. In a first of its'
+  kind study, we propose a novel deep learning architecture for
+  predicting functional markers in the cells given data on surface
+  markers. Such an approach is expected to automate the measurement of
+  functional markers across cell samples, provided data on the surface
+  markers are available, that has important practical advantages. We
+  validate and compare our approach with competing machine learning
+  methods using a real flow cytometry dataset, and showcase the
+  improved prediction performance of the deep learning architecture.}
 
 \section{Introduction}
 
@@ -102,35 +120,48 @@ for developing new methods to ask new questions in this field.
 Recently, deep learning models are revolutionizing the fields of
 precision medicine, data mining, astronomy, human-computer
 interactions, among many others, by becoming a major discovery force
-in science due to the unprecedented accuracy in prediction.  Moreover,
-deep learning approaches have shown accurate performance on genomics
-and biomedical
-applications\cite{Ciresan2013,Denas2013,Fakoor2013,Leung2014,CruzRoa2014,Li2017,Mobadersany2018}.
-
-Furthermore, CyTOF data is perfectly suited for deep learning methods.
-On one side, identify markers define a cell type (e.g., B cell, T
-cell, monocytes, MSC), and on the other side, expressions of
-functional markers identify the cell's activity (e.g., quiescent,
-secreting cytokines, proliferating, apoptosis). Since CyTOF technology
-allows for the simultaneous measurement of a large number of protein
-markers, most CyTOF studies measure both identity markers and
-functional markers, providing data for supervised learning tools, like
-neural networks.  In addition, each CyTOF run typically collects data
-on $10^6$ cells, creating an ideal large dataset in which the number
-of samples (cells) is orders of magnitude larger than the number of
+in science due to the unprecedented accuracy in prediction.
+\claudia{Moreover}{However}, \claudia{}{despite} deep learning
+approaches \claudia{have shown}{showing} accurate performance on
+genomics and biomedical
+applications\cite{Ciresan2013,Denas2013,Fakoor2013,Leung2014,CruzRoa2014,Li2017,Mobadersany2018},
+\claudia{}{the CyTOF community has not fully adopted these
+  approaches.}  \claudia{Furthermore}{In fact, it turns out that}
+CyTOF data is perfectly suited for deep learning methods.  On one
+side, identify markers define a cell type (e.g., B cell, T cell,
+monocytes, MSC), and on the other side, expressions of functional
+markers identify the cell's activity (e.g., quiescent, secreting
+cytokines, proliferating, apoptosis). Since CyTOF technology allows
+for the simultaneous measurement of a large number of protein markers,
+most CyTOF studies measure both identity markers and functional
+markers, providing data for supervised learning tools, like neural
+networks.  In addition, each CyTOF run typically collects data on
+$10^6$ cells, creating an ideal large dataset in which the number of
+samples (cells) is orders of magnitude larger than the number of
 variables (markers). Deep learning methods are particularly suited for
 this type of big data.
 
-In terms of motivation, there are two main reasons to predict the functional markers from surface markers in CyTOF data: 1) monetary and time cost, and 2) technical limit of the total number of markers CyTOF can measure, which is currently around 50 protein markers. That is, if we can accurately predict some functional markers based on surface markers, there is no longer the need to include those functional markers in the staining panel (experimental design), and thereby freeing up channels to measure more surface markers or additional functional markers that cannot be predicted.
+In terms of motivation, there are two main reasons to predict the
+functional markers from surface markers in CyTOF data: 1) monetary and
+time cost, and 2) technical limit of the total number of markers CyTOF
+can measure, which is currently around 50 protein markers. That is, if
+we can accurately predict some functional markers based on surface
+markers, there is no longer the need to include those functional
+markers in the staining panel (experimental design), and thereby
+freeing up channels to measure more surface markers or additional
+functional markers that cannot be predicted.
 
 
-Here, we explore neural network models to predict functional markers
-(internal phosphoproteins) with identify markers (cell surface
-proteins), and compare its performance in terms of accuracy and speed
-to other standard statistical approaches like regression, and random
-forests.  We show that neural networks improve prediction of
-functional markers, making them a powerful alternative to the usual
-regression techniques.
+Here, we \claudia{}{present the first work to} explore neural network
+models to predict functional markers (internal phosphoproteins) with
+identify markers (cell surface proteins). We compare the performance
+of neural networks in terms of accuracy and speed to other standard
+statistical approaches like regression, and random forests.  We show
+that neural networks improve prediction of functional markers, making
+them a powerful alternative to the usual regression techniques,
+\claudia{}{thus, providing quantitive evidence that deep learning
+  methods can enrich the existing research landscape of CyTOF big
+  data.}
 
 
 
@@ -155,7 +186,7 @@ The data is highly complex and correlated, violating some of the
 fundamental assumptions of standard statistical approaches (like
 regression). For example, the data is highly skewed and the pattern
 between response and predictor is not linear (see figure
-\ref{exploratory}). 
+\ref{exploratory}).
 
 \begin{figure}
 \includegraphics[scale=0.3]{figures/surface-hist.pdf}
@@ -211,20 +242,28 @@ We fit a neural network model to predict functional markers from
 surface markers, and compare its performance to three classical
 statistical methods: 1) linear regression (unpenalized and penalized),
 2) decision trees, and 3) random trees. Due to computational time
-constraints, we could not fit a support vector regression (SVR)
-model. We compared the performance of the four approaches by computing
-the mean square error (MSE) of the predicted responses.
+constraints, we could not fit a support vector regression (SVR) model
+(more in Discussion). We compared the performance of the four
+approaches by computing the mean square error (MSE) of the predicted
+responses.
 
-To fit the models, we divided the data into training set, validation
-set and testing set. The training set was used to fit each of the four
-models. The validation set was used to determine the best setup
-(tuning parameters) of each model in terms of MSE. Finally, the test
-set was used to compare the MSE across methods.
+To fit the models, we divided the data into training set,
+\claudia{validation set}{} and testing set. The training set was used
+to \claudia{fit each of the four models}{perform a 10-fold cross
+  validation scheme to choose the best model fit for each method. We
+  chose the model fit with the smallest average MSE}. \claudia{The
+  validation set was used to determine the best setup (tuning
+  parameters) of each model in terms of MSE. Finally, the test set was
+  used to compare the MSE across methods.}{Then, we used all the
+  training samples to estimate the final model for each method
+  (e.g. model and tuning parameters), and reported the prediction MSE
+  of each method based on the testing samples.}
 
 The complete data consisted of 1,223,228 cells in 18 functional
 markers (responses) and 15 surface markers (predictors), which we
-divided as follows: 750,000 rows as training set, 250,000 rows as
-validation set, and 223,228 rows as testing set.
+divided as follows: \claudia{750,000}{ 1,000,000} rows as training set,
+\claudia{250,000 rows as validation set}{}, and 223,228 rows as
+testing set.
 
 We used two separate measure of performance: a vector MSE (equation
 \ref{vectorMSEformula}) and individual MSE (equation
@@ -252,16 +291,18 @@ response ($k=1,\cdots,18$) for individual $i$, and $Y_{k,i} \in
 \vspace{0.25cm}
 \noindent \textbf{Neural network model:} We tested different network
 architectures, activation functions, regularization coefficients,
-solver methods, momentum policies, and learning rates with 50,000 maximum epochs. The best
-network has four layers (see figure \ref{nn}) with 90, 90, 45 and 45
-nodes. The network uses hyperbolic tangent as activation function,
-regularization coefficient of 0.0001, momentum policy fixed at 0.8, inverse-decay learning
-rate policy with base learning rate, gamma and power parameters at 0.01, 0.0001, 0.75. We used Adam solver\cite{Kingma2014}, an
-algorithm for first-order gradient-based optimization of stochastic
-objective functions, based on adaptive estimates of lower-order
-moments, instead of Stochastic Gradient Descent (SGD) as the former
-showed increased accuracy. All networks were trained using the julia
-package \texttt{Mocha}\cite{Bezanson2017,mocha}.
+solver methods, momentum policies, and learning rates with 50,000
+maximum epochs. The best network has four layers (see figure \ref{nn})
+with 90, 90, 45 and 45 nodes. The network uses hyperbolic tangent as
+activation function, regularization coefficient of 0.0001, momentum
+policy fixed at 0.8, inverse-decay learning rate policy with base
+learning rate, gamma and power parameters at 0.01, 0.0001, 0.75. We
+used Adam solver\cite{Kingma2014}, an algorithm for first-order
+gradient-based optimization of stochastic objective functions, based
+on adaptive estimates of lower-order moments, instead of Stochastic
+Gradient Descent (SGD) as the former showed increased accuracy. All
+networks were trained using the julia package
+\texttt{Mocha}\cite{Bezanson2017,mocha}.
 
 \begin{figure}
 \centering
@@ -369,18 +410,29 @@ Finally, we present selected scatterplots of surface markers as predictors for t
 
 \section{Discussion}
 
-In this work, we showed that a neural network model outperforms
-standard statistical approaches like linear regression and random
-forest in the prediction of functional markers from surface markers
-for CyTOF data. Neural networks were also faster and more efficient
-than random forests, which make them a more viable choice for big
-datasets.
+\claudia{}{To the best of our knowledge, our work presents the first
+  neural network model for the prediction of functionality in CyTOF
+  big data.}  In this work, we showed that a neural network model
+outperforms standard statistical approaches like linear regression and
+random forest in the prediction of functional markers from surface
+markers for CyTOF data. Neural networks were also faster and more
+efficient than random forests, which make them a more viable choice
+for big datasets.
 
 The improved prediction accuracy of neural networks can be explained
 by their flexibility to account for non-linearity or skewness.  Unlike
 regression models, neural networks do not have linearity or normality
 assumptions, and they take advantage of the correlation structure
 among responses by fitting a network for the whole response vector.
+\claudia{}{It is important to note that the while the neural network
+  model shows better performance than the other methods, this edge is
+  still quite modest. Random forest models also represent a suitable
+  choice for prediction under non-linear assumptions. However, we show
+  here that when scalability also matters, the neural network model
+  outperforms random forests (in computation time), while providing
+  more accurate predictions. We claim that neural networks are better
+  suited for big CyTOF data than random forests, but more work is
+  needed to corroborate this claims.}
 
 As mentioned already, CyTOF data is perfectly suited for deep learning
 methods given the simultaneous measurement of a large number of
@@ -390,8 +442,22 @@ accurate supervised methods, like neural networks. In addition, the
 structure of CyTOF data is ideal for deep learning: number of samples
 orders of magnitude greater than the number of variables.
 
-The accuracy in the prediction of functional markers from surface markers has economic and computational advantages, for example, considering the limitation to the total number of markers CyTOF can measure, which is currently around 50 protein markers. Being able to predict functional markers from surface markers could allow for different types of staining panels which could measure more surface markers, or focus on functional markers not so easily predicted.
+The accuracy in the prediction of functional markers from surface
+markers has economic and computational advantages, for example,
+considering the limitation to the total number of markers CyTOF can
+measure, which is currently around 50 protein markers. Being able to
+predict functional markers from surface markers could allow for
+different types of staining panels which could measure more surface
+markers, or focus on functional markers not so easily predicted.
 
+\claudia{}{Initially, we were surprised by the lack of scalability of
+  SVR models. However, given the non-linearity and optimization
+  complexity\cite{Smola2003, Welling2004}, it appeared that our
+  dataset was too large for the computation of the kernel matrix,
+  which is $n \times n$ where $n$ is the number of samples (more than
+  1 million in our case). More work is needed to assess the
+  performance of SVR under smaller datasets to assess the accuracy of
+  such models and the limits in scalability.}
 
 For future work, we can include an extended version of the
 dataset\cite{Bendall2011,Qiu2011} that includes 24 healthy sample of
@@ -410,6 +476,15 @@ type, we can explore whether there is evidence that the specific cell
 type could be further divided into subtypes.
 
 
+\vspace{0.5cm}
+\noindent \textbf{Acknowledgements:} We thank the editor as well as
+two anonymous reviewers whose suggestions greatly improved the
+manuscript.
+
+\vspace{0.5cm}
+\noindent \textbf{Data Sharing:} The data is publicly available
+through the original publications\cite{Bendall2011,Qiu2011} in the
+following website: \url{http://reports.cytobank.org/1/v1}.
 
 % For future work, So, we have N experiments: N+1 matrices 100k by 50: B
 % (baseline), $E_1,...,E_N$. We want to use the baseline information to

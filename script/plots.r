@@ -106,11 +106,11 @@ p <- ggplot(df,aes(x=reorder(method,-vecloss),y=vecloss,fill=method))+geom_bar(s
             plot.title = element_text(hjust=0.5, size=rel(1.8)),
             axis.title.x = element_text(size=rel(1.8)),
             axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-            axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-            axis.text.y = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+            axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+            axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
             ##legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
             panel.background = element_blank(),
-            axis.line = element_line(colour = "grey")
+            axis.line = element_line(colour = "black")
             ) +
     xlab("") + ylab("Vector MSE") + guides(fill=FALSE) +coord_flip()
 
@@ -132,11 +132,11 @@ p <- ggplot(df,aes(x=reorder(method,-time),y=time,fill=method))+geom_bar(stat="i
             plot.title = element_text(hjust=0.5, size=rel(1.8)),
             axis.title.x = element_text(size=rel(1.8)),
             axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-            axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-            axis.text.y = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+            axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+            axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
             ##legend.text=element_text(size=rel(1.2)), legend.title=element_text(size=rel(1.5)),
             panel.background = element_blank(),
-            axis.line = element_line(colour = "grey")
+            axis.line = element_line(colour = "black")
             ) +
     xlab("") + ylab("Time (sec.)") + guides(fill=FALSE) +coord_flip()
 
@@ -194,11 +194,11 @@ p <- ggplot(dff,aes(x=pred,y=mse,col=method))+geom_point() + geom_line()+
         plot.title = element_text(hjust=0.5, size=rel(1.8)),
         axis.title.x = element_text(size=rel(1.8)),
         axis.title.y = element_text(size=rel(1.8), angle=90, vjust=0.5, hjust=0.5),
-        axis.text.x = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
-        axis.text.y = element_text(colour="grey", size=rel(1.5), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.x = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
+        axis.text.y = element_text(colour="black", size=rel(1.7), angle=0, hjust=.5, vjust=.5, face="plain"),
         legend.text=element_text(size=rel(1.2)),
         panel.background = element_blank(),legend.title=element_blank(),
-        axis.line = element_line(colour = "grey")
+        axis.line = element_line(colour = "black")
         ) +
     scale_x_continuous(breaks=c(1:18))+
     xlab("Response") + ylab("MSE")
@@ -214,7 +214,7 @@ dev.off()
 ## Plots per response
 ## We will focus in response 1 (good), 3, 8, 14 (bad)
 
-## Waiting for the revised files after CV model fit
+## aqui voy: Waiting for the revised files after CV model fit
 dat1 = read.table("../results/Predictions/Test_1.txt", header=TRUE)
 dat3 = read.table("../results/Predictions/Test_3.txt", header=TRUE)
 dat8 = read.table("../results/Predictions/Test_8.txt", header=TRUE)

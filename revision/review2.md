@@ -1,6 +1,5 @@
 # To do
-- wait for xin for the "plots per response"
-- go over answers to reviewers and fix paper and answers
+- wait for xin for the "plots per response", redo all plots
 
 Report 1:
 

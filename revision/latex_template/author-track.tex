@@ -121,12 +121,12 @@ Recently, deep learning models are revolutionizing the fields of
 precision medicine, data mining, astronomy, human-computer
 interactions, among many others, by becoming a major discovery force
 in science due to the unprecedented accuracy in prediction.
-However, deep learning
-approaches showing accurate performance on
+\claudia{Moreover}{However}, \claudia{}{despite} deep learning
+approaches \claudia{have shown}{showing} accurate performance on
 genomics and biomedical
 applications\cite{Ciresan2013,Denas2013,Fakoor2013,Leung2014,CruzRoa2014,Li2017,Mobadersany2018},
-the CyTOF community has not fully adopted these
-  methods yet.  In fact, it turns out that
+\claudia{}{the CyTOF community has not fully adopted these
+  methods yet.}  \claudia{Furthermore}{In fact, it turns out that}
 CyTOF data is perfectly suited for deep learning methods.  On one
 side, identify markers define a cell type (e.g., B cell, T cell,
 monocytes, MSC), and on the other side, expressions of functional
@@ -152,16 +152,16 @@ freeing up channels to measure more surface markers or additional
 functional markers that cannot be predicted.
 
 
-Here, we present the first work to explore neural network
+Here, we \claudia{}{present the first work to} explore neural network
 models to predict functional markers (internal phosphoproteins) with
 identify markers (cell surface proteins). We compare the performance
 of neural networks in terms of accuracy and speed to other standard
 statistical approaches like regression, and random forests.  We show
 that neural networks improve prediction of functional markers, making
 them a powerful alternative to the usual regression techniques,
-thus, providing quantitive evidence that deep learning
+\claudia{}{thus, providing quantitive evidence that deep learning
   methods can enrich the existing research landscape of CyTOF big
-  data.
+  data.}
 
 
 
@@ -248,19 +248,22 @@ approaches by computing the mean square error (MSE) of the predicted
 responses.
 
 To fit the models, we divided the data into training set,
-and testing set. The training set was used
-to perform a 10-fold cross
+\claudia{validation set}{} and testing set. The training set was used
+to \claudia{fit each of the four models}{perform a 10-fold cross
   validation scheme to choose the best model fit for each method. We
-  chose the model fit with the smallest average MSE. 
-Then, we used all the
+  chose the model fit with the smallest average MSE}. \claudia{The
+  validation set was used to determine the best setup (tuning
+  parameters) of each model in terms of MSE. Finally, the test set was
+  used to compare the MSE across methods.}{Then, we used all the
   training samples to estimate the final model for each method
   (e.g. model and tuning parameters), and reported the prediction MSE
-  of each method based on the testing samples.
+  of each method based on the testing samples.}
 
-  The complete data consisted of 1,223,228 cells in 18 functional
-  markers (responses) and 15 surface markers (predictors), which we
-  divided as follows: 1,000,000 rows as training set, and 223,228 rows
-  as testing set.
+The complete data consisted of 1,223,228 cells in 18 functional
+markers (responses) and 15 surface markers (predictors), which we
+divided as follows: \claudia{750,000}{ 1,000,000} rows as training set,
+\claudia{250,000 rows as validation set}{}, and 223,228 rows as
+testing set.
 
 We used two separate measure of performance: a vector MSE (equation
 \ref{vectorMSEformula}) and individual MSE (equation
@@ -407,9 +410,9 @@ Finally, we present selected scatterplots of surface markers as predictors for t
 
 \section{Discussion}
 
-To the best of our knowledge, our work presents the first
+\claudia{}{To the best of our knowledge, our work presents the first
   neural network model for the prediction of functionality in CyTOF
-  big data.  In this work, we showed that a neural network model
+  big data.}  In this work, we showed that a neural network model
 outperforms standard statistical approaches like linear regression and
 random forest in the prediction of functional markers from surface
 markers for CyTOF data. Neural networks were also faster and more
@@ -421,7 +424,7 @@ by their flexibility to account for non-linearity or skewness.  Unlike
 regression models, neural networks do not have linearity or normality
 assumptions, and they take advantage of the correlation structure
 among responses by fitting a network for the whole response vector.
-It is important to note that the while the neural network
+\claudia{}{It is important to note that the while the neural network
   model shows better performance than the other methods, this edge is
   still quite modest. Random forest models also represent a suitable
   choice for prediction under non-linear assumptions. However, we show
@@ -429,7 +432,7 @@ It is important to note that the while the neural network
   outperforms random forests (in computation time), while providing
   more accurate predictions. We claim that neural networks are better
   suited for big CyTOF data than random forests, but more work is
-  needed to corroborate this claims.
+  needed to corroborate this claims.}
 
 As mentioned already, CyTOF data is perfectly suited for deep learning
 methods given the simultaneous measurement of a large number of
@@ -447,14 +450,14 @@ predict functional markers from surface markers could allow for
 different types of staining panels which could measure more surface
 markers, or focus on functional markers not so easily predicted.
 
-Initially, we were surprised by the lack of scalability of
+\claudia{}{Initially, we were surprised by the lack of scalability of
   SVR models. However, given the non-linearity and optimization
   complexity\cite{Smola2003, Welling2004}, it appeared that our
   dataset was too large for the computation of the kernel matrix,
   which is $n \times n$ where $n$ is the number of samples (more than
   1 million in our case). More work is needed to assess the
   performance of SVR under smaller datasets to assess the accuracy of
-  such models and the limits in scalability.
+  such models and the limits in scalability.}
 
 For future work, we can include an extended version of the
 dataset\cite{Bendall2011,Qiu2011} that includes 24 healthy sample of

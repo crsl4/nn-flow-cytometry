@@ -20,7 +20,7 @@ functional=["141-pPLCgamma2","150-pSTAT5", "152-Ki67","154-pSHP2","151-pERK1/2",
             "171-pBtk/Itk","172-pS6","174-pSrcFK","176-pCREB","175-pCrkL"]
 dfpred = vcat(df1[Symbol.(surface)],df2[Symbol.(surface)],df3[Symbol.(surface)],df4[Symbol.(surface)],df5[Symbol.(surface)])
 dfresp = vcat(df1[Symbol.(functional)],df2[Symbol.(functional)],df3[Symbol.(functional)],df4[Symbol.(functional)],df5[Symbol.(functional)])
-## randomize 1,223,228 rows into three sets: train (1,000,000 rows), test (223,228 rows)
+## randomize 1,223,228 rows into two sets: train (1,000,000 rows), test (223,228 rows)
 srand(5312)
 rand_seq = randperm(1223228)
 dfpredTrain = convert(Array{Float64,2}, dfpred[rand_seq[1:1000000],:])

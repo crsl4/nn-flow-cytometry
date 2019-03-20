@@ -11,42 +11,42 @@ Prediction of functional markers of mass cytometry data via deep learning (2019)
 - We want to use the baseline information to predict the funcional markers from surface markers (which do not change with experimental settings). That is, use B to predict E_i with a neural network
 - The structure of the data is given by: each row is a cell. The meaning of the columns are as follows:
  
-surface markers
-191-DNA             
-193-DNA             
-115-CD45
-139-CD45RA      
-142-CD19
-144-CD11b
-145-CD4
-146-CD8
-148-CD34
-147-CD20
-158-CD33
-160-CD123
-167-CD38
-170-CD90
-110_114-CD3
+Surface markers:
+- 191-DNA             
+- 193-DNA             
+- 115-CD45
+- 139-CD45RA      
+- 142-CD19
+- 144-CD11b
+- 145-CD4
+- 146-CD8
+- 148-CD34
+- 147-CD20
+- 158-CD33
+- 160-CD123
+- 167-CD38
+- 170-CD90
+- 110_114-CD3
  
-functional markers
-141-pPLCgamma2           
-150-pSTAT5       
-152-Ki67
-154-pSHP2
-151-pERK1/2
-153-pMAPKAPK2
-156-pZAP70/Syk
-159-pSTAT3
-164-pSLP-76
-165-pNFkB
-166-IkBalpha
-168-pH3
-169-pP38
-171-pBtk/Itk
-172-pS6
-174-pSrcFK
-176-pCREB
-175-pCrkL
+Functional markers:
+- 141-pPLCgamma2           
+- 150-pSTAT5       
+- 152-Ki67
+- 154-pSHP2
+- 151-pERK1/2
+- 153-pMAPKAPK2
+- 156-pZAP70/Syk
+- 159-pSTAT3
+- 164-pSLP-76
+- 165-pNFkB
+- 166-IkBalpha
+- 168-pH3
+- 169-pP38
+- 171-pBtk/Itk
+- 172-pS6
+- 174-pSrcFK
+- 176-pCREB
+- 175-pCrkL
  
  # Analyses
 

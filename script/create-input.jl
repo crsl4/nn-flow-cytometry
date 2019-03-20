@@ -11,7 +11,7 @@ using DataFrames, CSV
 ## -----------------------------
 ## Reading the data
 ## -----------------------------
-datafolder = "C:/Users/xma72/Documents/Deep_Learning_project/nn-flow-cytometry-master/data/cytof-5-data/"
+datafolder = "../data/cytof-5-data/"
 dat1 = "CyTOF54_Tube01_Day1_Unstim1_curated.fcs_eventnum_Ungated_Jnstim1_Day1_normalized_1_Unstim1_Singlets.fcs.txt"
 dat2 = "CyTOF54_Tube02_Day1_Unstim2_curated.fcs_eventnum_Ungated_Unstim2_Day1_normalized_2_Unstim2_Singlets.fcs.txt"
 dat3 = "CyTOF54_Tube03_Day2_Unstim3_curated.fcs_eventnum_Ungated_Unstim3_Day2_normalized_3_Unstim3_Singlets.fcs.txt"
@@ -73,7 +73,7 @@ dfrespTest = df5resp
 ## -------------------------------------
 ## Creating input txt files
 ## -------------------------------------
-resultsfolder = "C:/Users/xma72/Documents/Deep_Learning_project/nn-flow-cytometry-master/results/"
+resultsfolder = "../results/"
 
 CSV.write(string(resultsfolder,"cytof-5-data-train-pred.txt"), dfpredTrain)
 CSV.write(string(resultsfolder,"cytof-5-data-train-resp.txt"), dfrespTrain)

@@ -1,8 +1,3 @@
-# To do
-- put in 2 columns (6pages) format for http://sceweb.sce.uhcl.edu/bicob19/paper_submission.html ?
-- put in BMC format?
-
-
 # 0. Exploratory analysis
 - Using `scripts/exploratory.r`, which will read the raw data from `data/cytof-5-data`, and plot some exploratory things.
 - Output 
@@ -33,4 +28,11 @@
 # 3. Comparing analyses
 
 Scripts `analysis-comb.jl` for original submission, and `analysis-comb-cv.jl` for revision.
+
+The analysis process shown in the manuscript has been combined into the Julia script named `analysis-comb-cv.jl`. First section of 
+the code preprocessed the data into the format for analysis purpose. The samples were split randomly into training and testing sets. 
+The training set was then used in 10-fold cross-validation to tune the parameters in the models including linear regression, decision tree 
+regression, random forest regression and feedforward neural network. The testing set was reserved to evaluate the performance across the 
+different models following tuning process.
+
 Results are saved in this file and then copy-pasted in `plots.r` for the final plots.
